@@ -1,5 +1,12 @@
-AI EVOLUTION: FROM RULES TO AGENTS Complete Learning Resources for Data
-Engineering Teams ====================================================
+AI EVOLUTION: FROM RULES TO AGENTS Complete Learning Resources for Engineering Teams ====================================================
+
+\## Youtube Links:
+
+AI Agents Explained in 5 mins:
+https://youtu.be/06aWuBMoxGw
+
+AI Evolution & Choosing Your AI Champion: 
+https://youtu.be/Axp8jFCkiHo
 
 \## WHAT IS THIS?
 
@@ -10,20 +17,15 @@ IT Support for Banking Data Platform) so you can directly compare
 approaches.
 
 \## WHY IT EXISTS
-
-Your recent 2-day training failed because it: - Lacked depth and
-practical examples - Didn\'t show connections between techniques -
-Provided no decision framework for when to use what
-
-This fixes all of that with: ✓ Working code you can run immediately ✓
+ ✓ Working code you can run immediately ✓
 One use case throughout all 6 stages ✓ Real metrics: latency, cost,
 coverage, dev time ✓ Clear decision framework with trade-offs ✓ 4-week
 structured learning plan
 
 \## WHAT\'S DELIVERED
 
-\### 1. MASTER EVOLUTION GUIDE (START HERE) File:
-master-evolution-guide.html
+\### 1. AI MASTER EVOLUTION GUIDE (START HERE) File:
+ai-master-evolution-guide.html
 
 Complete overview of all 6 stages:  - Stage 1: Rule-Based Systems
 (1980s-2010s)  - Stage 2: Traditional ML (2010s)  - Stage 3: GenAI +
