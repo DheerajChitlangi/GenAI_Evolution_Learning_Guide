@@ -7,7 +7,7 @@ Includes runnable code, slide decks, visual diagrams, and notebooks.
 
 ## YouTube Primer
 - [AI Agents Explained in 5 mins](https://youtu.be/06aWuBMoxGw)  
-- [AI Evolution & Choosing Your AI Champion](https://youtu.be/Axp8jFCkiHo)
+- [AI Evolution & Choosing Your GenAI Champion in 8 mins](https://youtu.be/Axp8jFCkiHo)
 
 ---
 
@@ -35,16 +35,11 @@ A comprehensive learning package that covers AI development stages from rule-bas
    - `06-agentic-workflows.html`  
    - Deep dive into multi-agent systems, ADK + Gemini implementation patterns, production considerations, safety, and cost control.
 
-3. **Rule-based Agent code (run this first)**  
-   - `code-examples/01-rule-based/`  
-     - `rule_based_agent.py`  
-     - `README.md`  
-   - Processes sample tickets using keyword matching and decision trees.
 
-4. **Quick Start (navigation hub)**  
+3. **Quick Start (navigation hub)**  
    - `00-QUICK-START.html`
 
-5. **This README**  
+4. **This README**  
    - `README.md`
 
 ---
@@ -72,12 +67,12 @@ A comprehensive learning package that covers AI development stages from rule-bas
 ├── ai-master-evolution-guide.html
 ├── 06-agentic-workflows.html
 ├── README.md
-└── code-examples/
+└── code_files/
     └── 01-rule-based/
-        ├── rule_based_agent.py
-        └── README.md
+        ├── rag-implementation-l1-support.ipynb
+        ├── agentic-ai-implementation-l1-support.ipynb
+        └── README_code.md
 ```
-
 ---
 
 ## The 6 Stages of AI Evolution
