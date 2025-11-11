@@ -25,7 +25,7 @@ A comprehensive learning package that covers AI development stages from rule-bas
 
 ---
 
-## Delivered artifacts
+## Delivered artifacts - Browse presentations_html_files or pdf_versions folders & Architecture_Diagrams
 1. **AI Master Evolution Guide (start here)**  
    - `ai-master-evolution-guide.html`  
    - Overview of all 6 stages: Rule-based, Traditional ML, Prompting (GenAI), RAG, Fine-tuning, Agentic AI.  
