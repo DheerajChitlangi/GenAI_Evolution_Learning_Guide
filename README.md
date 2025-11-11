@@ -63,15 +63,21 @@ A comprehensive learning package that covers AI development stages from rule-bas
 ## Directory structure
 ```
 /
-├── 00-QUICK-START.html
-├── ai-master-evolution-guide.html
-├── 06-agentic-workflows.html
+├── AI_Evolution_Report.docx
+└── presentations_html_files
+    ├── 00-QUICK-START.html
+    ├── ai-master-evolution-guide.html
+    └── 03-genai-prompting.html
+    ├── 04-rag.html
+    ├── 06-agentic-workflows.html
+    └── 07-mcp-protocol.html
 ├── README.md
 └── code_files/
-    └── 01-rule-based/
-        ├── rag-implementation-l1-support.ipynb
-        ├── agentic-ai-implementation-l1-support.ipynb
-        └── README_code.md
+    ├── rag-implementation-l1-support.ipynb
+    ├── agentic-ai-implementation-l1-support.ipynb
+    └── README_code.md
+├── Agents_MindMap.png
+├── AI_Evolution_MindMap.png
 ```
 ---
 
