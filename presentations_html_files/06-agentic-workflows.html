@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentic AI Workflows — Complete Implementation Guide</title>
+<style>
+  body {font-family: "Segoe UI", Arial, sans-serif; background:#f9fafc; color:#222; margin:0;}
+  section {padding:40px 60px; border-bottom:1px solid #e0e0e0;}
+  h1,h2,h3,h4 {margin-top:0;color:#003366;}
+  h1 {font-size:38px; text-align:center; margin:40px 0 20px 0;}
+  h2 {font-size:28px; margin-top:30px; border-bottom:3px solid #667eea; padding-bottom:10px;}
+  h3 {font-size:22px; margin-top:20px; color:#004a99;}
+  h4 {font-size:18px; margin-top:15px; color:#333;}
+  
+  .hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 60px;
+    text-align: center;
+    border-bottom: none;
+  }
+  .hero h1 {color: white; font-size: 42px; margin-bottom: 15px;}
+  .hero .subtitle {font-size: 20px; opacity: 0.95; margin-bottom: 20px;}
+  
+  .tl-dr {
+    background: #eaf4ff;
+    border-left: 5px solid #004a99;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+  .tl-dr strong {font-size: 18px; color: #003366;}
+  
+  .highlight {background:#eaf4ff; padding:20px; border-left:5px solid #004a99; border-radius: 8px; margin: 20px 0;}
+  .warning {background:#fff4e6; border-left:5px solid:#f59e0b; padding:20px; border-radius:8px; margin:20px 0;}
+  .success {background:#e6f7f1; border-left:5px solid:#006400; padding:20px; border-radius:8px; margin:20px 0;}
+  
+  .grid {display:flex; flex-wrap:wrap; gap:20px; margin: 20px 0;}
+  .card {
+    flex:1 1 300px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:white;
+    padding:25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .card h3 {margin-top:0; color:#003366;}
+  .card h4 {margin-top:15px; color:#004a99;}
+  
+  .architecture {
+    background: #f5f7fa;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .architecture .box {
+    background: white;
+    border: 2px solid #667eea;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 10px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .architecture .agent-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+  }
+  .architecture .arrow {
+    display: inline-block;
+    color: #667eea;
+    font-size: 24px;
+    margin: 0 10px;
+  }
+  
+  .code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .code-block .comment {color: #6a9955;}
+  .code-block .keyword {color: #569cd6;}
+  .code-block .string {color: #ce9178;}
+  .code-block .function {color: #dcdcaa;}
+  .code-block .class {color: #4ec9b0;}
+  
+  .comparison-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  .before-box {
+    background: #fff5f5;
+    border-left: 5px solid #f56565;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  .after-box {
+    background: #f0fff4;
+    border-left: 5px solid #48bb78;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  .before-box h4 {color: #c53030;}
+  .after-box h4 {color: #2f855a;}
+  
+  table {border-collapse: collapse; width:100%; margin:20px 0;}
+  th, td {border:1px solid #ddd; padding:12px; text-align:left; vertical-align: top;}
+  th {background:#003366; color:#fff; font-weight: 600;}
+  tr:nth-child(even){background:#f2f6fa;}
+  
+  .checklist {
+    background: white;
+    border: 2px solid #667eea;
+    border-radius: 10px;
+    padding: 25px;
+    margin: 20px 0;
+  }
+  .checklist h4 {color: #667eea; margin-top: 15px;}
+  .checklist ul {line-height: 2;}
+  .checklist input[type="checkbox"] {margin-right: 10px; transform: scale(1.2);}
+  
+  .agent-workflow {
+    background: white;
+    border: 2px solid #667eea;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+  }
+  .workflow-step {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+  }
+  .workflow-step .step-number {
+    background: #667eea;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 20px;
+    flex-shrink: 0;
+  }
+  .workflow-step .step-content {flex: 1;}
+  .workflow-step .step-content h4 {margin: 0 0 10px 0; color: #667eea;}
+  
+  @media (max-width: 768px) {
+    section {padding: 30px 20px;}
+    .grid, .comparison-table {grid-template-columns: 1fr;}
+    h1 {font-size: 32px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🤝 Agentic AI Workflows</h1>
+  <div class="subtitle">Stage 6: Multi-Agent Systems with Autonomous Execution</div>
+  <p style="max-width: 800px; margin: 20px auto; font-size: 16px; line-height: 1.6;">
+    The cutting edge of AI — systems that can plan, use tools, collaborate, and execute actions autonomously. 
+    This guide covers everything from concepts to production deployment.
+  </p>
+</div>
+
+<section>
+  <h2>🎯 What Are Agentic AI Workflows?</h2>
+  
+  <div class="tl-dr">
+    <strong>TL;DR</strong><br>
+    Agentic AI moves from "suggest solutions" to "fix problems." Instead of a single LLM generating text, you have multiple specialized agents working together, each with tool access, that can plan multi-step workflows and execute actions autonomously.
+  </div>
+  
+  <h3>The Evolution: From Text Generation to Action</h3>
+  
+  <div class="comparison-table">
+    <div class="before-box">
+      <h4>❌ Previous Approaches (Stages 1-5)</h4>
+      <ul style="font-size: 14px; line-height: 1.8;">
+        <li><strong>Rule-Based:</strong> "Here's a canned response"</li>
+        <li><strong>ML Classifier:</strong> "This is category X"</li>
+        <li><strong>GenAI Prompting:</strong> "Here's what to do"</li>
+        <li><strong>RAG:</strong> "According to docs, do X"</li>
+        <li><strong>Fine-Tuning:</strong> "Consistently says to do X"</li>
+      </ul>
+      <p style="margin-top: 15px; font-weight: 600;">👤 <strong>Human Still Does the Work</strong></p>
+    </div>
+    
+    <div class="after-box">
+      <h4>✅ Agentic AI (Stage 6)</h4>
+      <ul style="font-size: 14px; line-height: 1.8;">
+        <li><strong>Analyzes:</strong> "Let me diagnose the issue"</li>
+        <li><strong>Retrieves:</strong> "I'll check the runbook"</li>
+        <li><strong>Plans:</strong> "Here's my 3-step approach"</li>
+        <li><strong>Executes:</strong> "Running schema sync..."</li>
+        <li><strong>Verifies:</strong> "Checking if fix worked..."</li>
+        <li><strong>Adapts:</strong> "That didn't work, trying plan B"</li>
+      </ul>
+      <p style="margin-top: 15px; font-weight: 600;">🤖 <strong>Agent Does the Work</strong></p>
+    </div>
+  </div>
+  
+  <h3>Core Concepts</h3>
+  
+  <div class="grid">
+    <div class="card">
+      <h4>🤖 Agents</h4>
+      <p>Specialized AI entities with specific roles, powered by LLMs, that can reason and make decisions.</p>
+      <p style="font-size: 13px; margin-top: 10px;"><strong>Example:</strong> DiagnosticAgent, KnowledgeAgent, ResolutionAgent</p>
+    </div>
+    
+    <div class="card">
+      <h4>🔧 Tools</h4>
+      <p>Functions/APIs that agents can call to interact with the world (databases, APIs, scripts).</p>
+      <p style="font-size: 13px; margin-top: 10px;"><strong>Example:</strong> query_logs(), restart_pipeline(), send_email()</p>
+    </div>
+    
+    <div class="card">
+      <h4>🎯 Orchestration</h4>
+      <p>Coordination logic that decides which agents run, in what order, and how they collaborate.</p>
+      <p style="font-size: 13px; margin-top: 10px;"><strong>Patterns:</strong> Sequential, Parallel, Conditional, Hierarchical</p>
+    </div>
+    
+    <div class="card">
+      <h4>🧠 Planning</h4>
+      <p>Agents break down complex tasks into subtasks and determine execution strategy.</p>
+      <p style="font-size: 13px; margin-top: 10px;"><strong>Technique:</strong> Chain-of-thought, ReAct (Reasoning + Acting)</p>
+    </div>
+    
+    <div class="card">
+      <h4>🔄 Self-Correction</h4>
+      <p>Agents verify results, detect failures, and retry with different approaches.</p>
+      <p style="font-size: 13px; margin-top: 10px;"><strong>Example:</strong> If fix fails → try alternative → escalate if all fail</p>
+    </div>
+    
+    <div class="card">
+      <h4>📝 Memory</h4>
+      <p>Agents maintain context across interactions (short-term) and learn from past experiences (long-term).</p>
+      <p style="font-size: 13px; margin-top: 10px;"><strong>Types:</strong> Conversation history, task results, learned patterns</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>🏗️ Architecture for L1 IT Support</h2>
+  
+  <h3>Multi-Agent System Design</h3>
+  
+  <div class="architecture">
+    <div style="margin-bottom: 30px;">
+      <div class="box">Ticket Arrives</div>
+      <span class="arrow">↓</span>
+    </div>
+    
+    <div style="margin-bottom: 30px;">
+      <div class="agent-box">🎯 Orchestrator Agent</div><br>
+      <span style="font-size: 14px; color: #666;">Plans workflow, coordinates agents</span>
+    </div>
+    
+    <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin: 30px 0;">
+      <div style="text-align: center;">
+        <div class="agent-box">🔍 Diagnostic Agent</div>
+        <p style="font-size: 12px; margin-top: 10px;">Analyzes issue<br>Queries logs</p>
+      </div>
+      <div style="text-align: center;">
+        <div class="agent-box">📚 Knowledge Agent</div>
+        <p style="font-size: 12px; margin-top: 10px;">Searches runbooks<br>Retrieves solutions</p>
+      </div>
+      <div style="text-align: center;">
+        <div class="agent-box">🛠️ Resolution Agent</div>
+        <p style="font-size: 12px; margin-top: 10px;">Executes fix<br>Verifies success</p>
+      </div>
+    </div>
+    
+    <div style="margin-top: 30px;">
+      <span class="arrow">↓</span><br>
+      <div class="box">✅ Resolved or 🔼 Escalated</div>
+    </div>
+  </div>
+  
+  <h3>Agent Workflow Example</h3>
+  
+  <div class="agent-workflow">
+    <div class="workflow-step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h4>Orchestrator Receives Ticket</h4>
+        <p>Ticket: "Pipeline job-456 failed with schema mismatch error"</p>
+        <p style="font-size: 13px; color: #666; margin-top: 5px;">
+          <strong>Decision:</strong> This requires diagnostic → knowledge → resolution flow
+        </p>
+      </div>
+    </div>
+    
+    <div class="workflow-step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h4>Diagnostic Agent Analyzes</h4>
+        <p><strong>Tool calls:</strong> query_logs(job_id="job-456"), get_pipeline_config()</p>
+        <p style="font-size: 13px; margin-top: 5px;">
+          <strong>Finding:</strong> "Column 'user_email' exists in source but not in target table 'users_prod'"
+        </p>
+      </div>
+    </div>
+    
+    <div class="workflow-step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h4>Knowledge Agent Retrieves Solution</h4>
+        <p><strong>Tool calls:</strong> vector_search(query="schema mismatch solution")</p>
+        <p style="font-size: 13px; margin-top: 5px;">
+          <strong>Found:</strong> Runbook SOP-451: "Run schema_sync_job for affected table, then restart pipeline"
+        </p>
+      </div>
+    </div>
+    
+    <div class="workflow-step">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <h4>Resolution Agent Executes Fix</h4>
+        <p><strong>Tool calls:</strong></p>
+        <ul style="font-size: 13px; margin: 5px 0 5px 20px;">
+          <li>run_schema_sync(table="users_prod") → Success ✓</li>
+          <li>restart_pipeline(job_id="job-456") → Started ✓</li>
+          <li>verify_job_status(job_id="job-456", timeout=300) → Success ✓</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="workflow-step">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <h4>Orchestrator Reports Results</h4>
+        <p style="font-size: 14px;">
+          <strong>Status:</strong> ✅ Auto-Resolved<br>
+          <strong>Time:</strong> 8 minutes<br>
+          <strong>Actions Taken:</strong> Schema sync executed, pipeline restarted, verified successful<br>
+          <strong>Next Steps:</strong> None - ticket closed
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>💻 Implementation with Google ADK</h2>
+  
+  <h3>Setup and Installation</h3>
+  
+  <div class="code-block">
+<span class="comment"># Install ADK (Agentic Development Kit)</span>
+pip install google-adk --break-system-packages
+
+<span class="comment"># Install dependencies</span>
+pip install google-generativeai chromadb --break-system-packages
+
+<span class="comment"># Set up authentication</span>
+<span class="keyword">export</span> GOOGLE_API_KEY=<span class="string">"your-gemini-api-key"</span>
+  </div>
+  
+  <h3>1. Define Tools (Agent Actions)</h3>
+  
+  <div class="code-block">
+<span class="keyword">from</span> adk <span class="keyword">import</span> Tool
+<span class="keyword">from</span> typing <span class="keyword">import</span> Dict, Any
+
+<span class="comment"># Tool 1: Query logs to diagnose issues</span>
+<span class="keyword">def</span> <span class="function">query_logs</span>(job_id: <span class="keyword">str</span>, last_n_lines: <span class="keyword">int</span> = <span class="string">100</span>) -> <span class="keyword">str</span>:
+    <span class="string">"""
+    Query logs for a specific job to identify errors.
+    
+    Args:
+        job_id: The pipeline job ID
+        last_n_lines: Number of recent log lines to retrieve
+    
+    Returns:
+        Log content as string
+    """</span>
+    <span class="comment"># In production, this would connect to actual logging system</span>
+    <span class="comment"># For demo, return mock data</span>
+    <span class="keyword">return</span> <span class="string">f"""
+    [ERROR] Job {job_id} failed at 10:45:23
+    [ERROR] Schema validation failed
+    [ERROR] Column 'user_email' not found in target table 'users_prod'
+    [INFO] Source table has columns: id, user_email, created_at
+    [INFO] Target table has columns: id, email, created_at
+    """</span>
+
+<span class="comment"># Tool 2: Get pipeline configuration</span>
+<span class="keyword">def</span> <span class="function">get_pipeline_config</span>(job_id: <span class="keyword">str</span>) -> Dict[<span class="keyword">str</span>, Any]:
+    <span class="string">"""Retrieve pipeline configuration details"""</span>
+    <span class="keyword">return</span> {
+        <span class="string">"job_id"</span>: job_id,
+        <span class="string">"source_table"</span>: <span class="string">"staging.users"</span>,
+        <span class="string">"target_table"</span>: <span class="string">"prod.users_prod"</span>,
+        <span class="string">"schema_validation"</span>: <span class="string">"strict"</span>,
+        <span class="string">"timeout"</span>: <span class="string">1800</span>
+    }
+
+<span class="comment"># Tool 3: Vector search for solutions</span>
+<span class="keyword">def</span> <span class="function">vector_search</span>(query: <span class="keyword">str</span>, top_k: <span class="keyword">int</span> = <span class="string">3</span>) -> List[Dict]:
+    <span class="string">"""Search knowledge base for relevant solutions"""</span>
+    <span class="comment"># In production, use ChromaDB or similar</span>
+    <span class="keyword">return</span> [
+        {
+            <span class="string">"doc_id"</span>: <span class="string">"SOP-451"</span>,
+            <span class="string">"title"</span>: <span class="string">"Schema Mismatch Resolution"</span>,
+            <span class="string">"content"</span>: <span class="string">"Run schema_sync_job for affected table, then restart pipeline"</span>,
+            <span class="string">"confidence"</span>: <span class="string">0.95</span>
+        }
+    ]
+
+<span class="comment"># Tool 4: Execute schema sync</span>
+<span class="keyword">def</span> <span class="function">run_schema_sync</span>(table: <span class="keyword">str</span>) -> Dict[<span class="keyword">str</span>, Any]:
+    <span class="string">"""
+    Run schema synchronization job for a table.
+    
+    Args:
+        table: Table name (e.g., 'users_prod')
+    
+    Returns:
+        Status dict with success/failure
+    """</span>
+    <span class="comment"># In production, call actual schema sync API</span>
+    <span class="keyword">print</span>(<span class="string">f"🔧 Running schema sync for {table}..."</span>)
+    <span class="keyword">return</span> {<span class="string">"status"</span>: <span class="string">"success"</span>, <span class="string">"columns_synced"</span>: <span class="string">1</span>, <span class="string">"time_taken"</span>: <span class="string">"3.2s"</span>}
+
+<span class="comment"># Tool 5: Restart pipeline</span>
+<span class="keyword">def</span> <span class="function">restart_pipeline</span>(job_id: <span class="keyword">str</span>) -> Dict[<span class="keyword">str</span>, Any]:
+    <span class="string">"""Restart a failed pipeline job"""</span>
+    <span class="keyword">print</span>(<span class="string">f"🔄 Restarting pipeline {job_id}..."</span>)
+    <span class="keyword">return</span> {<span class="string">"status"</span>: <span class="string">"started"</span>, <span class="string">"new_run_id"</span>: <span class="string">f"{job_id}-retry-1"</span>}
+
+<span class="comment"># Tool 6: Verify job success</span>
+<span class="keyword">def</span> <span class="function">verify_job_status</span>(job_id: <span class="keyword">str</span>, timeout: <span class="keyword">int</span> = <span class="string">300</span>) -> Dict[<span class="keyword">str</span>, Any]:
+    <span class="string">"""Poll job status until completion or timeout"""</span>
+    <span class="keyword">print</span>(<span class="string">f"⏳ Verifying job {job_id}..."</span>)
+    <span class="comment"># In production, poll actual job status</span>
+    <span class="keyword">return</span> {<span class="string">"status"</span>: <span class="string">"success"</span>, <span class="string">"rows_processed"</span>: <span class="string">15420</span>, <span class="string">"duration"</span>: <span class="string">"4.5min"</span>}
+
+<span class="comment"># Register tools with ADK</span>
+tools = [
+    Tool(<span class="string">"query_logs"</span>, query_logs),
+    Tool(<span class="string">"get_pipeline_config"</span>, get_pipeline_config),
+    Tool(<span class="string">"vector_search"</span>, vector_search),
+    Tool(<span class="string">"run_schema_sync"</span>, run_schema_sync),
+    Tool(<span class="string">"restart_pipeline"</span>, restart_pipeline),
+    Tool(<span class="string">"verify_job_status"</span>, verify_job_status)
+]
+  </div>
+  
+  <h3>2. Create Specialized Agents</h3>
+  
+  <div class="code-block">
+<span class="keyword">from</span> adk <span class="keyword">import</span> Agent
+
+<span class="comment"># Agent 1: Diagnostic - Analyzes issues</span>
+diagnostic_agent = Agent(
+    name=<span class="string">"DiagnosticAgent"</span>,
+    role=<span class="string">"""You are a diagnostic specialist for a banking data platform.
+    Your job is to analyze support tickets and determine root causes.
+    
+    Use available tools to:
+    1. Query logs to find error messages
+    2. Get pipeline configurations
+    3. Identify the specific issue (schema, timeout, data quality, etc.)
+    
+    Output a structured diagnosis with:
+    - Issue category
+    - Root cause
+    - Affected components
+    - Severity level
+    """</span>,
+    model=<span class="string">"gemini-1.5-pro"</span>,
+    tools=[<span class="string">"query_logs"</span>, <span class="string">"get_pipeline_config"</span>],
+    temperature=<span class="string">0.1</span>  <span class="comment"># Low temp for factual analysis</span>
+)
+
+<span class="comment"># Agent 2: Knowledge - Retrieves solutions</span>
+knowledge_agent = Agent(
+    name=<span class="string">"KnowledgeAgent"</span>,
+    role=<span class="string">"""You are a knowledge retrieval specialist.
+    Your job is to search runbooks and documentation for solutions.
+    
+    Given a diagnosis, use vector search to find:
+    1. Standard Operating Procedures (SOPs)
+    2. Previous similar incidents
+    3. Step-by-step resolution guides
+    
+    Output:
+    - Relevant SOP reference
+    - Recommended solution steps
+    - Estimated resolution time
+    """</span>,
+    model=<span class="string">"gemini-1.5-flash"</span>,  <span class="comment"># Faster model for retrieval</span>
+    tools=[<span class="string">"vector_search"</span>],
+    temperature=<span class="string">0.0</span>  <span class="comment"># Zero temp for retrieval</span>
+)
+
+<span class="comment"># Agent 3: Resolution - Executes fixes</span>
+resolution_agent = Agent(
+    name=<span class="string">"ResolutionAgent"</span>,
+    role=<span class="string">"""You are a resolution execution specialist for banking systems.
+    Your job is to execute fixes and verify they worked.
+    
+    CRITICAL SAFETY RULES:
+    1. Only execute pre-approved actions (schema sync, restart, config changes)
+    2. Never delete or modify data without explicit approval
+    3. Verify each step succeeded before proceeding
+    4. If any step fails, STOP and escalate
+    5. Log all actions taken
+    
+    Given a solution plan:
+    1. Execute steps in order
+    2. Verify each step completed successfully
+    3. Perform final validation
+    4. Report results with evidence
+    """</span>,
+    model=<span class="string">"gemini-1.5-pro"</span>,
+    tools=[<span class="string">"run_schema_sync"</span>, <span class="string">"restart_pipeline"</span>, <span class="string">"verify_job_status"</span>],
+    temperature=<span class="string">0.1</span>,
+    safety_settings={<span class="string">"require_human_approval"</span>: [<span class="string">"delete"</span>, <span class="string">"modify_data"</span>]}  <span class="comment"># Extra safety</span>
+)
+  </div>
+  
+  <h3>3. Orchestrate Multi-Agent Workflow</h3>
+  
+  <div class="code-block">
+<span class="keyword">from</span> adk <span class="keyword">import</span> Orchestrator, WorkflowType
+
+<span class="comment"># Create orchestrator with sequential workflow</span>
+orchestrator = Orchestrator(
+    name=<span class="string">"L1SupportOrchestrator"</span>,
+    agents=[diagnostic_agent, knowledge_agent, resolution_agent],
+    workflow=WorkflowType.SEQUENTIAL,  <span class="comment"># Run agents in order</span>
+    max_iterations=<span class="string">5</span>,  <span class="comment"># Allow retry loops</span>
+    enable_memory=<span class="keyword">True</span>  <span class="comment"># Remember past interactions</span>
+)
+
+<span class="comment"># Process a ticket</span>
+<span class="keyword">async def</span> <span class="function">process_ticket</span>(ticket_description: <span class="keyword">str</span>, ticket_id: <span class="keyword">str</span>):
+    <span class="string">"""
+    Main entry point for ticket processing.
+    
+    This orchestrates the full workflow:
+    1. Diagnostic agent analyzes
+    2. Knowledge agent finds solution
+    3. Resolution agent executes fix
+    """</span>
+    
+    <span class="keyword">print</span>(<span class="string">f"\n🎫 Processing Ticket {ticket_id}\n"</span>)
+    <span class="keyword">print</span>(<span class="string">f"Description: {ticket_description}\n"</span>)
+    
+    <span class="comment"># Run orchestrated workflow</span>
+    result = <span class="keyword">await</span> orchestrator.run(
+        task=ticket_description,
+        context={
+            <span class="string">"ticket_id"</span>: ticket_id,
+            <span class="string">"timestamp"</span>: datetime.now().isoformat(),
+            <span class="string">"priority"</span>: <span class="string">"high"</span>
+        }
+    )
+    
+    <span class="comment"># Extract results</span>
+    <span class="keyword">print</span>(<span class="string">f"\n{'='*80}"</span>)
+    <span class="keyword">print</span>(<span class="string">f"RESULTS FOR TICKET {ticket_id}"</span>)
+    <span class="keyword">print</span>(<span class="string">f"{'='*80}\n"</span>)
+    
+    <span class="keyword">print</span>(<span class="string">f"Status: {result.status}"</span>)  <span class="comment"># 'resolved' or 'escalated'</span>
+    <span class="keyword">print</span>(<span class="string">f"Time Taken: {result.duration_seconds}s"</span>)
+    <span class="keyword">print</span>(<span class="string">f"Actions Performed: {len(result.actions)}"</span>)
+    
+    <span class="keyword">for</span> agent_result <span class="keyword">in</span> result.agent_results:
+        <span class="keyword">print</span>(<span class="string">f"\n{agent_result.agent_name}:"</span>)
+        <span class="keyword">print</span>(<span class="string">f"  {agent_result.output}"</span>)
+    
+    <span class="keyword">return</span> result
+
+<span class="comment"># Example usage</span>
+<span class="keyword">import</span> asyncio
+
+ticket = <span class="string">"Pipeline job-456 failed with schema mismatch error. Column 'user_email' not found in target table."</span>
+result = asyncio.run(process_ticket(ticket, <span class="string">"TKT-001"</span>))
+  </div>
+</section>
+
+<section>
+  <h2>🎨 Advanced Patterns</h2>
+  
+  <h3>Pattern 1: Conditional Orchestration</h3>
+  
+  <div class="highlight">
+    <strong>Use Case:</strong> Different agents for different ticket types
+  </div>
+  
+  <div class="code-block">
+<span class="comment"># Define conditional workflow</span>
+<span class="keyword">def</span> <span class="function">ticket_router</span>(ticket: <span class="keyword">str</span>) -> List[Agent]:
+    <span class="string">"""Route tickets to appropriate agents based on type"""</span>
+    
+    <span class="keyword">if</span> <span class="string">"schema"</span> <span class="keyword">in</span> ticket.lower() <span class="keyword">or</span> <span class="string">"pipeline"</span> <span class="keyword">in</span> ticket.lower():
+        <span class="comment"># Technical issue - full diagnostic workflow</span>
+        <span class="keyword">return</span> [diagnostic_agent, knowledge_agent, resolution_agent]
+    
+    <span class="keyword">elif</span> <span class="string">"access"</span> <span class="keyword">in</span> ticket.lower() <span class="keyword">or</span> <span class="string">"permission"</span> <span class="keyword">in</span> ticket.lower():
+        <span class="comment"># Access request - skip diagnostic, go straight to resolution</span>
+        <span class="keyword">return</span> [permission_agent]
+    
+    <span class="keyword">elif</span> <span class="string">"slow"</span> <span class="keyword">in</span> ticket.lower() <span class="keyword">or</span> <span class="string">"performance"</span> <span class="keyword">in</span> ticket.lower():
+        <span class="comment"># Performance issue - need specialized optimization agent</span>
+        <span class="keyword">return</span> [diagnostic_agent, performance_agent, resolution_agent]
+    
+    <span class="keyword">else</span>:
+        <span class="comment"># Unknown - start with triage agent</span>
+        <span class="keyword">return</span> [triage_agent, diagnostic_agent, knowledge_agent, resolution_agent]
+
+<span class="comment"># Use dynamic routing</span>
+orchestrator = Orchestrator(
+    name=<span class="string">"AdaptiveOrchestrator"</span>,
+    agent_selector=ticket_router,  <span class="comment"># Dynamic selection function</span>
+    workflow=WorkflowType.DYNAMIC
+)
+  </div>
+  
+  <h3>Pattern 2: Parallel Execution</h3>
+  
+  <div class="highlight">
+    <strong>Use Case:</strong> Run multiple agents simultaneously for speed
+  </div>
+  
+  <div class="code-block">
+<span class="comment"># Run diagnostic and knowledge retrieval in parallel</span>
+parallel_orchestrator = Orchestrator(
+    name=<span class="string">"ParallelOrchestrator"</span>,
+    agents=[
+        [diagnostic_agent, knowledge_agent],  <span class="comment"># These run in parallel</span>
+        resolution_agent  <span class="comment"># This runs after both complete</span>
+    ],
+    workflow=WorkflowType.PARALLEL_THEN_SEQUENTIAL
+)
+
+<span class="comment"># Result: Saves ~3-5 seconds by running diagnostic + search concurrently</span>
+  </div>
+  
+  <h3>Pattern 3: Self-Correction Loop</h3>
+  
+  <div class="code-block">
+<span class="comment"># Agent that retries with different approaches</span>
+<span class="keyword">class</span> <span class="class">SelfCorrectingAgent</span>(Agent):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, **kwargs):
+        <span class="keyword">super</span>().__init__(**kwargs)
+        <span class="keyword">self</span>.max_retries = <span class="string">3</span>
+    
+    <span class="keyword">async def</span> <span class="function">execute_with_retry</span>(<span class="keyword">self</span>, task):
+        <span class="keyword">for</span> attempt <span class="keyword">in</span> range(<span class="keyword">self</span>.max_retries):
+            result = <span class="keyword">await self</span>.execute(task)
+            
+            <span class="comment"># Verify result</span>
+            verification = <span class="keyword">await self</span>.verify(result)
+            
+            <span class="keyword">if</span> verification.success:
+                <span class="keyword">return</span> result
+            <span class="keyword">else</span>:
+                <span class="keyword">print</span>(<span class="string">f"⚠️ Attempt {attempt+1} failed: {verification.error}"</span>)
+                <span class="keyword">print</span>(<span class="string">f"🔄 Trying alternative approach..."</span>)
+                
+                <span class="comment"># Adjust strategy based on error</span>
+                task = <span class="keyword">self</span>.adapt_strategy(task, verification.error)
+        
+        <span class="comment"># All retries failed - escalate</span>
+        <span class="keyword">return</span> {<span class="string">"status"</span>: <span class="string">"escalate"</span>, <span class="string">"reason"</span>: <span class="string">"All retry attempts failed"</span>}
+  </div>
+  
+  <h3>Pattern 4: Human-in-the-Loop</h3>
+  
+  <div class="code-block">
+<span class="comment"># Agent that requests approval for critical actions</span>
+<span class="keyword">class</span> <span class="class">SafeResolutionAgent</span>(Agent):
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="keyword">self</span>, **kwargs):
+        <span class="keyword">super</span>().__init__(**kwargs)
+        <span class="keyword">self</span>.critical_actions = [<span class="string">'delete'</span>, <span class="string">'modify_prod_data'</span>, <span class="string">'change_permissions'</span>]
+    
+    <span class="keyword">async def</span> <span class="function">execute_action</span>(<span class="keyword">self</span>, action_name, params):
+        <span class="keyword">if</span> action_name <span class="keyword">in</span> <span class="keyword">self</span>.critical_actions:
+            <span class="comment"># Request human approval</span>
+            approval = <span class="keyword">await</span> <span class="keyword">self</span>.request_approval(
+                action=action_name,
+                params=params,
+                reason=<span class="string">f"Critical action requires approval per banking policy"</span>
+            )
+            
+            <span class="keyword">if</span> <span class="keyword">not</span> approval.granted:
+                <span class="keyword">return</span> {<span class="string">"status"</span>: <span class="string">"blocked"</span>, <span class="string">"reason"</span>: approval.rejection_reason}
+        
+        <span class="comment"># Execute the action</span>
+        <span class="keyword">return await</span> <span class="keyword">self</span>.tool_manager.execute(action_name, params)
+  </div>
+</section>
+
+<section>
+  <h2>⚙️ Production Considerations</h2>
+  
+  <div class="warning">
+    <strong>⚠️ Critical for Banking:</strong> Agentic AI systems require robust safety measures, monitoring, and governance before production deployment.
+  </div>
+  
+  <h3>Safety & Guardrails</h3>
+  
+  <div class="grid">
+    <div class="card">
+      <h4>🛡️ Action Whitelisting</h4>
+      <p style="font-size: 14px;">Only allow agents to execute pre-approved actions. Maintain explicit allow-list.</p>
+      <div class="code-block" style="font-size: 12px; padding: 10px;">
+allowed_actions = [
+    "query_logs",
+    "restart_pipeline",
+    "run_schema_sync",
+    "send_notification"
+]
+<span class="comment"># Block everything else</span>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>🔐 Parameter Validation</h4>
+      <p style="font-size: 14px;">Validate all parameters before execution. Prevent injection attacks.</p>
+      <div class="code-block" style="font-size: 12px; padding: 10px;">
+<span class="keyword">def</span> <span class="function">validate_params</span>(action, params):
+    <span class="keyword">if</span> action == <span class="string">"restart_pipeline"</span>:
+        <span class="keyword">assert</span> <span class="string">"job_id"</span> <span class="keyword">in</span> params
+        <span class="keyword">assert</span> re.match(<span class="string">r"^job-\d+$"</span>, 
+                       params[<span class="string">"job_id"</span>])
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>📝 Audit Logging</h4>
+      <p style="font-size: 14px;">Log every agent decision and action for compliance and debugging.</p>
+      <div class="code-block" style="font-size: 12px; padding: 10px;">
+audit_log.record({
+    <span class="string">"timestamp"</span>: now(),
+    <span class="string">"agent"</span>: agent.name,
+    <span class="string">"action"</span>: action_name,
+    <span class="string">"params"</span>: params,
+    <span class="string">"result"</span>: result
+})
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>🚨 Circuit Breakers</h4>
+      <p style="font-size: 14px;">Stop execution if costs, errors, or latency exceed thresholds.</p>
+      <div class="code-block" style="font-size: 12px; padding: 10px;">
+<span class="keyword">if</span> cost_this_hour > BUDGET_LIMIT:
+    raise CircuitBreakerError(
+        <span class="string">"Cost limit exceeded"</span>
+    )
+      </div>
+    </div>
+  </div>
+  
+  <h3>Monitoring & Observability</h3>
+  
+  <table style="font-size: 14px;">
+    <tr>
+      <th>Metric</th>
+      <th>What to Track</th>
+      <th>Alert Threshold</th>
+    </tr>
+    <tr>
+      <td><strong>Success Rate</strong></td>
+      <td>% of tickets auto-resolved</td>
+      <td>Alert if drops below 60%</td>
+    </tr>
+    <tr>
+      <td><strong>Latency (P95)</strong></td>
+      <td>Time to resolution</td>
+      <td>Alert if exceeds 30 seconds</td>
+    </tr>
+    <tr>
+      <td><strong>Tool Call Rate</strong></td>
+      <td>API calls per ticket</td>
+      <td>Alert if exceeds 20 calls</td>
+    </tr>
+    <tr>
+      <td><strong>Error Rate</strong></td>
+      <td>Failed actions / total actions</td>
+      <td>Alert if exceeds 5%</td>
+    </tr>
+    <tr>
+      <td><strong>Cost per Ticket</strong></td>
+      <td>LLM API costs</td>
+      <td>Alert if exceeds $0.50</td>
+    </tr>
+    <tr>
+      <td><strong>Escalation Rate</strong></td>
+      <td>Tickets sent to humans</td>
+      <td>Alert if exceeds 40%</td>
+    </tr>
+  </table>
+  
+  <h3>Cost Management</h3>
+  
+  <div class="highlight">
+    <strong>Cost Breakdown for 500 Tickets/Month:</strong><br><br>
+    
+    <strong>Scenario 1: Full Agentic Workflow (All tickets)</strong><br>
+    • Diagnostic Agent: 500 tickets × $0.01/call = $5<br>
+    • Knowledge Agent: 500 tickets × $0.005/call = $2.50<br>
+    • Resolution Agent: 200 auto-resolved × $0.02/call = $4<br>
+    • Tool Calls: 500 tickets × 5 avg calls × $0.001 = $2.50<br>
+    <strong>Total: ~$14/month</strong> (much cheaper than expected!)<br><br>
+    
+    <strong>Scenario 2: Hybrid Approach (Smart routing)</strong><br>
+    • Simple tickets (30%): Rule-based (free)<br>
+    • Medium complexity (40%): RAG ($2)<br>
+    • Complex (30%): Full agentic ($4.20)<br>
+    <strong>Total: ~$6.20/month</strong><br><br>
+    
+    <strong>Key Insight:</strong> Agentic AI is more affordable than expected if you use efficient models (Gemini Flash) and optimize tool calls.
+  </div>
+</section>
+
+<section>
+  <h2>✅ Production Readiness Checklist</h2>
+  
+  <div class="checklist">
+    <h4>🏗️ Architecture</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li><input type="checkbox"> Agents are single-responsibility (one clear job each)</li>
+      <li><input type="checkbox"> Tools are atomic and well-tested</li>
+      <li><input type="checkbox"> Orchestration logic is documented and version-controlled</li>
+      <li><input type="checkbox"> Error handling covers all failure modes</li>
+    </ul>
+    
+    <h4>🛡️ Safety</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li><input type="checkbox"> Action whitelist defined and enforced</li>
+      <li><input type="checkbox"> Parameter validation on all tool calls</li>
+      <li><input type="checkbox"> Human-in-the-loop for critical actions</li>
+      <li><input type="checkbox"> Rollback capability for all state changes</li>
+      <li><input type="checkbox"> Rate limiting to prevent runaway costs</li>
+    </ul>
+    
+    <h4>📊 Monitoring</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li><input type="checkbox"> Success/failure metrics tracked</li>
+      <li><input type="checkbox"> Latency monitoring (P50, P95, P99)</li>
+      <li><input type="checkbox"> Cost tracking per ticket</li>
+      <li><input type="checkbox"> Audit logs for all agent actions</li>
+      <li><input type="checkbox"> Alerts configured for anomalies</li>
+    </ul>
+    
+    <h4>🧪 Testing</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li><input type="checkbox"> Unit tests for each tool</li>
+      <li><input type="checkbox"> Integration tests for agent workflows</li>
+      <li><input type="checkbox"> Chaos testing (what if tool fails?)</li>
+      <li><input type="checkbox"> Performance testing with realistic load</li>
+      <li><input type="checkbox"> Regression tests for edge cases</li>
+    </ul>
+    
+    <h4>📚 Documentation</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li><input type="checkbox"> Agent responsibilities documented</li>
+      <li><input type="checkbox"> Tool API contracts defined</li>
+      <li><input type="checkbox"> Runbook for common issues</li>
+      <li><input type="checkbox"> Incident response playbook</li>
+      <li><input type="checkbox"> Training materials for team</li>
+    </ul>
+    
+    <h4>🔐 Compliance (Banking)</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li><input type="checkbox"> Data retention policies followed</li>
+      <li><input type="checkbox"> PII handling compliant</li>
+      <li><input type="checkbox"> Audit trail meets regulatory requirements</li>
+      <li><input type="checkbox"> Access controls implemented</li>
+      <li><input type="checkbox"> Security review completed</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>🚀 Getting Started: 4-Week Plan</h2>
+  
+  <div class="agent-workflow">
+    <div class="workflow-step">
+      <div class="step-number">W1</div>
+      <div class="step-content">
+        <h4>Week 1: Learn Fundamentals</h4>
+        <ul style="font-size: 14px;">
+          <li>Read this guide thoroughly</li>
+          <li>Complete ADK tutorials</li>
+          <li>Build simple single-agent system (no orchestration yet)</li>
+          <li>Experiment with tool calling</li>
+        </ul>
+        <p style="margin-top: 10px; font-size: 13px;"><strong>Deliverable:</strong> Single agent that can query logs and generate reports</p>
+      </div>
+    </div>
+    
+    <div class="workflow-step">
+      <div class="step-number">W2</div>
+      <div class="step-content">
+        <h4>Week 2: Build Multi-Agent System</h4>
+        <ul style="font-size: 14px;">
+          <li>Create 3 specialized agents (diagnostic, knowledge, resolution)</li>
+          <li>Implement simple sequential orchestration</li>
+          <li>Add tool functions for your use case</li>
+          <li>Test with 10-20 tickets</li>
+        </ul>
+        <p style="margin-top: 10px; font-size: 13px;"><strong>Deliverable:</strong> Working multi-agent prototype</p>
+      </div>
+    </div>
+    
+    <div class="workflow-step">
+      <div class="step-number">W3</div>
+      <div class="step-content">
+        <h4>Week 3: Add Safety & Monitoring</h4>
+        <ul style="font-size: 14px;">
+          <li>Implement action whitelisting</li>
+          <li>Add parameter validation</li>
+          <li>Set up audit logging</li>
+          <li>Create monitoring dashboard</li>
+          <li>Add human-in-the-loop for critical actions</li>
+        </ul>
+        <p style="margin-top: 10px; font-size: 13px;"><strong>Deliverable:</strong> Production-ready safety controls</p>
+      </div>
+    </div>
+    
+    <div class="workflow-step">
+      <div class="step-number">W4</div>
+      <div class="step-content">
+        <h4>Week 4: Test & Deploy</h4>
+        <ul style="font-size: 14px;">
+          <li>Run comprehensive testing (unit, integration, chaos)</li>
+          <li>Pilot with 10% of tickets</li>
+          <li>Monitor metrics and iterate</li>
+          <li>Document learnings and best practices</li>
+          <li>Present to team</li>
+        </ul>
+        <p style="margin-top: 10px; font-size: 13px;"><strong>Deliverable:</strong> Production deployment + team presentation</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>📚 Additional Resources</h2>
+  
+  <div class="grid">
+    <div class="card">
+      <h3>Documentation</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="https://ai.google.dev/adk" target="_blank">Google ADK Docs</a></li>
+        <li><a href="https://ai.google.dev/gemini-api" target="_blank">Gemini API Reference</a></li>
+        <li><a href="https://python.langchain.com/docs/modules/agents" target="_blank">LangChain Agents</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>Code Examples</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="../code-examples/06-agentic/">Full Implementation</a></li>
+        <li><a href="../code-examples/06-agentic/tools.py">Tool Definitions</a></li>
+        <li><a href="../code-examples/06-agentic/orchestrator.py">Orchestration Logic</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>Related Guides</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="master-evolution-guide.html">AI Evolution Overview</a></li>
+        <li><a href="04-rag.html">RAG Implementation</a></li>
+        <li><a href="05-fine-tuning.html">Fine-Tuning Guide</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>Community</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="https://github.com/google/adk" target="_blank">ADK GitHub</a></li>
+        <li><a href="https://discord.gg/gemini-api" target="_blank">Gemini Discord</a></li>
+        <li>Internal: #ai-agents Slack channel</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer style="text-align: center; padding: 40px; background: #f5f7fa; color: #666; font-size: 14px;">
+  <p>© 2025 — Agentic AI Workflows Guide for Data Engineering Teams</p>
+  <p style="margin-top: 10px;">Part of AI Evolution Learning Series • Banking AI & Data Platform</p>
+</footer>
+
+</body>
+</html>

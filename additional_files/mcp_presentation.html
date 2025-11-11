@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px;
+            display: none;
+            flex-direction: column;
+            position: relative;
+            animation: slideIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 36px;
+            color: #2d3748;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #4a5568;
+            margin: 20px 0 10px 0;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: #718096;
+            margin-bottom: 40px;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            height: 100%;
+        }
+
+        .problem-box, .solution-box {
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #fc8181;
+        }
+
+        .solution-box {
+            border-left-color: #68d391;
+        }
+
+        .architecture-diagram {
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .box {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px auto;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .arrow {
+            font-size: 32px;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .benefit-card h3 {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .benefit-card p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            align-items: flex-start;
+        }
+
+        .timeline-date {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        .check {
+            color: #48bb78;
+            font-weight: bold;
+        }
+
+        .cross {
+            color: #f56565;
+            font-weight: bold;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:disabled:hover {
+            transform: none;
+            background: white;
+            color: inherit;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #68d391;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+            color: #d97706;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        ul li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .big-number {
+            font-size: 120px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+
+        .usb-analogy {
+            background: #f7fafc;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 30px 0;
+            border: 3px dashed #667eea;
+        }
+
+        .usb-analogy h3 {
+            color: #667eea;
+            font-size: 32px;
+        }
+
+        .decision-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .use-mcp, .skip-mcp {
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid;
+        }
+
+        .use-mcp {
+            background: #f0fff4;
+            border-color: #48bb78;
+        }
+
+        .skip-mcp {
+            background: #fff5f5;
+            border-color: #f56565;
+        }
+
+        .use-mcp h3 {
+            color: #48bb78;
+        }
+
+        .skip-mcp h3 {
+            color: #f56565;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="center-content">
+                <h1 style="font-size: 64px;">Model Context Protocol</h1>
+                <p class="subtitle" style="font-size: 32px;">The Universal Standard for AI Integration</p>
+                <div class="usb-analogy" style="margin-top: 60px;">
+                    <h3>"USB for AI Applications"</h3>
+                    <p style="font-size: 20px; margin-top: 20px; color: #4a5568;">One protocol to connect any AI model to any data source</p>
+                </div>
+                <p style="margin-top: 40px; color: #718096; font-size: 18px;">Created by Anthropic • November 2024 • Open Source</p>
+            </div>
+            <div class="slide-number">1 / 12</div>
+        </div>
+
+        <!-- Slide 2: The Problem -->
+        <div class="slide">
+            <h2>The Integration Problem</h2>
+            <div class="content">
+                <div class="two-column">
+                    <div class="problem-box">
+                        <h3>Before MCP</h3>
+                        <ul style="margin-top: 20px;">
+                            <li>Every AI app builds custom integrations</li>
+                            <li>Salesforce integration × 20 teams = 20 versions</li>
+                            <li>Switch from Claude to GPT? Rewrite everything</li>
+                            <li>No standard for security & governance</li>
+                            <li>Integration code scattered everywhere</li>
+                        </ul>
+                        <div class="code-block" style="margin-top: 30px; font-size: 12px;">
+AI Agent Code
+├── Salesforce SDK
+├── SAP ERP wrapper
+├── Confluence API
+├── Jira integration
+├── Slack webhooks
+└── Custom auth for each
+                        </div>
+                    </div>
+                    <div class="solution-box">
+                        <h3>With MCP</h3>
+                        <ul style="margin-top: 20px;">
+                            <li>Write integration once, use everywhere</li>
+                            <li>Platform team maintains MCP servers</li>
+                            <li>Works with Claude, GPT, Gemini, any model</li>
+                            <li>Centralized security & governance</li>
+                            <li>Reusable across entire organization</li>
+                        </ul>
+                        <div class="code-block" style="margin-top: 30px; font-size: 12px;">
+AI Agent (any model)
+    ↓ MCP Protocol
+Salesforce MCP Server
+    ↓
+Salesforce API
+
+✓ One integration
+✓ All teams benefit
+✓ Model agnostic
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">2 / 12</div>
+        </div>
+
+        <!-- Slide 3: How MCP Works -->
+        <div class="slide">
+            <h2>How MCP Works</h2>
+            <div class="content">
+                <div class="architecture-diagram">
+                    <div class="box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <strong style="font-size: 20px;">AI Model</strong><br>
+                        <span style="font-size: 14px;">Claude • GPT-4 • Gemini • Llama</span>
+                    </div>
+                    <div class="arrow">↓</div>
+                    <div style="background: #fef5e7; padding: 15px; border-radius: 10px; max-width: 500px; margin: 10px auto; border: 2px dashed #d97706;">
+                        <strong style="color: #d97706;">MCP Protocol</strong><br>
+                        <span style="font-size: 14px; color: #4a5568;">JSON-RPC over stdio/HTTP</span>
+                    </div>
+                    <div class="arrow">↓</div>
+                    <div class="box">
+                        <strong style="font-size: 20px;">MCP Server</strong><br>
+                        <span style="font-size: 14px;">Exposes Resources, Prompts & Tools</span>
+                    </div>
+                    <div class="arrow">↓</div>
+                    <div class="box" style="background: #f7fafc; border-color: #4a5568;">
+                        <strong style="font-size: 20px;">External System</strong><br>
+                        <span style="font-size: 14px;">Database • API • File System • SaaS</span>
+                    </div>
+                </div>
+                <div class="benefit-grid" style="margin-top: 40px;">
+                    <div class="benefit-card">
+                        <h3>📄 Resources</h3>
+                        <p>Things AI can read: files, database records, documents</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>💬 Prompts</h3>
+                        <p>Reusable templates with pre-configured context</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>🔧 Tools</h3>
+                        <p>Actions AI can perform: create tickets, send emails</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>🔒 Security</h3>
+                        <p>Centralized auth, rate limiting, audit logging</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">3 / 12</div>
+        </div>
+
+        <!-- Slide 4: Real-World Enterprise Scenario -->
+        <div class="slide">
+            <h2>Real-World: Customer Support Agent</h2>
+            <div class="content">
+                <p style="font-size: 18px; margin-bottom: 30px;">AI agent needs to access multiple enterprise systems:</p>
+                <div class="architecture-diagram">
+                    <div class="box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <strong>Customer Support AI Agent</strong>
+                    </div>
+                    <div class="arrow">↓ via MCP</div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 20px 0;">
+                        <div class="box" style="font-size: 14px; background: #f0fff4; border-color: #48bb78;">
+                            <strong>Salesforce MCP</strong><br>
+                            → Customer data<br>
+                            → Account history
+                        </div>
+                        <div class="box" style="font-size: 14px; background: #ebf8ff; border-color: #4299e1;">
+                            <strong>SAP MCP</strong><br>
+                            → Order history<br>
+                            → Invoices
+                        </div>
+                        <div class="box" style="font-size: 14px; background: #fef5e7; border-color: #d97706;">
+                            <strong>Knowledge MCP</strong><br>
+                            → Confluence docs<br>
+                            → SharePoint
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                        <div class="box" style="font-size: 14px; background: #fef5e7; border-color: #d97706;">
+                            <strong>Jira MCP</strong><br>
+                            → Create tickets<br>
+                            → Track issues
+                        </div>
+                        <div class="box" style="font-size: 14px; background: #fef5e7; border-color: #d97706;">
+                            <strong>Comms MCP</strong><br>
+                            → Slack notify<br>
+                            → Send emails
+                        </div>
+                    </div>
+                </div>
+                <div style="background: #f0fff4; padding: 25px; border-radius: 15px; margin-top: 30px; border-left: 5px solid #48bb78;">
+                    <strong style="color: #48bb78; font-size: 18px;">✓ Benefits:</strong>
+                    <ul style="margin-top: 15px;">
+                        <li>Agent code stays simple and clean</li>
+                        <li>Platform team owns MCP servers</li>
+                        <li>Security & governance centralized</li>
+                        <li>Reusable across all support agents</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-number">4 / 12</div>
+        </div>
+
+        <!-- Slide 5: Enterprise Benefits -->
+        <div class="slide">
+            <h2>Enterprise Benefits</h2>
+            <div class="content">
+                <div class="benefit-grid">
+                    <div class="benefit-card">
+                        <h3>🎯 Separation of Concerns</h3>
+                        <p><strong>AI Team:</strong> Focus on agent logic & prompts</p>
+                        <p><strong>Platform Team:</strong> Maintain MCP servers</p>
+                        <p><strong>Security Team:</strong> Audit once, apply everywhere</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>🔐 Governance & Security</h3>
+                        <p>• Rate limiting & cost tracking</p>
+                        <p>• PII masking & data protection</p>
+                        <p>• Role-based access control</p>
+                        <p>• Compliance audit logging</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>🤝 Multi-Agent Orchestration</h3>
+                        <p>• Document Agent → SharePoint MCP</p>
+                        <p>• Verification Agent → Credit Bureau MCP</p>
+                        <p>• Approval Agent → DocuSign MCP</p>
+                        <p>All use same protocol!</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>☁️ Hybrid Cloud Ready</h3>
+                        <p>• Cloud: Salesforce, Snowflake</p>
+                        <p>• On-prem: DB2, SharePoint</p>
+                        <p>• Legacy: Mainframes via MCP</p>
+                        <p>AI doesn't care where data lives</p>
+                    </div>
+                </div>
+                <div style="background: #ebf8ff; padding: 25px; border-radius: 15px; margin-top: 30px; text-align: center; border: 3px solid #4299e1;">
+                    <div class="big-number" style="font-size: 80px;">200 → 10</div>
+                    <p style="font-size: 20px; color: #2c5282;"><strong>20 agents × 10 integrations = 200 custom builds</strong></p>
+                    <p style="font-size: 20px; color: #2c5282; margin-top: 10px;"><strong>With MCP: 10 shared servers, infinite reuse</strong></p>
+                </div>
+            </div>
+            <div class="slide-number">5 / 12</div>
+        </div>
+
+        <!-- Slide 6: Multi-LLM Strategy -->
+        <div class="slide">
+            <h2>Multi-LLM Strategy Made Easy</h2>
+            <div class="content">
+                <p style="font-size: 18px; margin-bottom: 30px;">Most enterprises don't want vendor lock-in. They use different models for different tasks:</p>
+                <div style="background: #f7fafc; padding: 30px; border-radius: 15px;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;">
+                        <div>
+                            <div class="box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 15px;">
+                                <strong>Claude</strong><br>
+                                <span style="font-size: 14px;">Creative writing, analysis</span>
+                            </div>
+                            <div class="box" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; margin-bottom: 15px;">
+                                <strong>GPT-4</strong><br>
+                                <span style="font-size: 14px;">Complex reasoning, math</span>
+                            </div>
+                            <div class="box" style="background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); color: white; margin-bottom: 15px;">
+                                <strong>Gemini</strong><br>
+                                <span style="font-size: 14px;">Multimodal tasks</span>
+                            </div>
+                            <div class="box" style="background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); color: white;">
+                                <strong>Custom Model</strong><br>
+                                <span style="font-size: 14px;">Domain-specific fine-tuned</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center;">
+                            <div class="arrow" style="font-size: 48px; text-align: center;">→</div>
+                            <div class="box" style="background: #fef5e7; border-color: #d97706; padding: 30px;">
+                                <strong style="font-size: 20px; color: #d97706;">Same MCP Servers</strong><br><br>
+                                <span style="font-size: 14px;">✓ Salesforce MCP</span><br>
+                                <span style="font-size: 14px;">✓ Database MCP</span><br>
+                                <span style="font-size: 14px;">✓ Document MCP</span><br>
+                                <span style="font-size: 14px;">✓ API Gateway MCP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: #f0fff4; padding: 25px; border-radius: 15px; margin-top: 30px; border-left: 5px solid #48bb78;">
+                    <strong style="font-size: 18px; color: #48bb78;">Without MCP:</strong> Maintain 4 different integration codebases<br>
+                    <strong style="font-size: 18px; color: #48bb78; margin-top: 15px; display: block;">With MCP:</strong> Write integrations once, use with any model
+                </div>
+            </div>
+            <div class="slide-number">6 / 12</div>
+        </div>
+
+        <!-- Slide 7: Timeline -->
+        <div class="slide">
+            <h2>How MCP Came to Exist</h2>
+            <div class="content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2022-2023</div>
+                        <div class="timeline-content">
+                            <strong style="font-size: 18px;">The Integration Explosion</strong>
+                            <p style="margin-top: 10px;">ChatGPT & Claude become popular. Every developer building AI apps faces the same problem: connecting to data sources. OpenAI launches "plugins" (later deprecated). No standard approach exists.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Late 2023</div>
+                        <div class="timeline-content">
+                            <strong style="font-size: 18px;">Anthropic's Insight</strong>
+                            <p style="margin-top: 10px;">Anthropic observes customers struggling with enterprise data connectivity. The question: <em>"What if we created a protocol, not just an API?"</em> - Learning from OpenAI's closed plugin approach.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Nov 2024</div>
+                        <div class="timeline-content">
+                            <strong style="font-size: 18px;">MCP Launch 🚀</strong>
+                            <p style="margin-top: 10px;"><strong>Open source release (MIT license)</strong> with TypeScript & Python SDKs, initial integrations (Google Drive, Slack, GitHub, Postgres), and developer tools. Community adoption begins.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025+</div>
+                        <div class="timeline-content">
+                            <strong style="font-size: 18px;">The Vision</strong>
+                            <p style="margin-top: 10px;">MCP becomes the standard for AI-data connectivity. "MCP Hub" ecosystem emerges. Enterprise "MCP Gateways" govern all AI integrations. Model-agnostic future realized.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">7 / 12</div>
+        </div>
+
+        <!-- Slide 8: Technical Architecture -->
+        <div class="slide">
+            <h2>Technical Architecture</h2>
+            <div class="content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div>
+                        <h3>Protocol Foundation</h3>
+                        <div class="code-block" style="font-size: 13px;">
+JSON-RPC 2.0 Protocol
+
+Transport Options:
+├── stdio (subprocess)
+│   Local MCP servers
+│   Low latency
+│
+└── HTTP/SSE (web service)
+    Remote MCP servers
+    Cloud integrations
+                        </div>
+                        <div style="background: #f7fafc; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                            <strong>Three Core Primitives:</strong>
+                            <ul style="margin-top: 15px;">
+                                <li><span class="highlight">Resources</span>: Data AI can read</li>
+                                <li><span class="highlight">Prompts</span>: Template library</li>
+                                <li><span class="highlight">Tools</span>: Actions AI can take</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Example MCP Server</h3>
+                        <div class="code-block" style="font-size: 11px;">
+from mcp.server import Server
+
+server = Server("customer-db")
+
+@server.list_resources()
+async def list_resources():
+    return [Resource(
+        uri="db://customers",
+        name="Customer Database"
+    )]
+
+@server.list_tools()
+async def list_tools():
+    return [Tool(
+        name="search_customer",
+        description="Find by email",
+        inputSchema={...}
+    )]
+
+@server.call_tool()
+async def call_tool(name, args):
+    return search_db(args)
+                        </div>
+                        <div style="background: #f0fff4; padding: 15px; border-radius: 10px; margin-top: 15px; border: 2px solid #48bb78;">
+                            <strong style="color: #48bb78;">✓ Model discovers capabilities</strong><br>
+                            <strong style="color: #48bb78;">✓ Standard interface</strong><br>
+                            <strong style="color: #48bb78;">✓ Type-safe operations</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">8 / 12</div>
+        </div>
+
+        <!-- Slide 9: Current Ecosystem -->
+        <div class="slide">
+            <h2>MCP Ecosystem (Nov 2024)</h2>
+            <div class="content">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div>
+                        <h3>Official MCP Servers</h3>
+                        <div style="background: #ebf8ff; padding: 25px; border-radius: 15px; border: 2px solid #4299e1;">
+                            <p style="font-weight: 600; color: #2c5282; margin-bottom: 15px;">By Anthropic:</p>
+                            <ul>
+                                <li>📁 Filesystem (local files)</li>
+                                <li>🐙 GitHub (repos, issues, PRs)</li>
+                                <li>📄 Google Drive (docs, sheets)</li>
+                                <li>💬 Slack (messages, channels)</li>
+                                <li>🗄️ PostgreSQL (database queries)</li>
+                                <li>🔍 Brave Search (web search)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Community & Clients</h3>
+                        <div style="background: #f0fff4; padding: 25px; border-radius: 15px; border: 2px solid #48bb78; margin-bottom: 20px;">
+                            <p style="font-weight: 600; color: #22543d; margin-bottom: 15px;">Community Servers:</p>
+                            <ul>
+                                <li>📝 Notion, Linear, Jira</li>
+                                <li>☁️ AWS, Azure, GCP connectors</li>
+                                <li>🧠 Vector databases</li>
+                                <li>🏢 Custom enterprise tools</li>
+                            </ul>
+                        </div>
+                        <div style="background: #fef5e7; padding: 25px; border-radius: 15px; border: 2px solid #d97706;">
+                            <p style="font-weight: 600; color: #744210; margin-bottom: 15px;">MCP Clients:</p>
+                            <ul>
+                                <li>Claude Desktop App</li>
+                                <li>Claude Code (terminal)</li>
+                                <li>AutoGPT adapters</li>
+                                <li>LangChain integration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-top: 30px; text-align: center;">
+                    <strong style="font-size: 24px;">🚀 Ecosystem Growing Rapidly</strong>
+                    <p style="margin-top: 15px; font-size: 16px;">Browse community servers • Contribute your own • Model-agnostic future</p>
+                </div>
+            </div>
+            <div class="slide-number">9 / 12</div>
+        </div>
+
+        <!-- Slide 10: Latency & Performance -->
+        <div class="slide">
+            <h2>Addressing Latency Concerns</h2>
+            <div class="content">
+                <p style="font-size: 18px; margin-bottom: 30px;">Yes, MCP adds a layer. Here's when it matters and when it doesn't:</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div style="background: #f0fff4; padding: 30px; border-radius: 15px; border: 3px solid #48bb78;">
+                        <h3 style="color: #48bb78;">✓ Latency Impact: LOW</h3>
+                        <ul style="margin-top: 20px;">
+                            <li><strong>Human-in-the-loop workflows</strong><br>Support tickets, document review</li>
+                            <li><strong>Batch processing</strong><br>Overnight jobs, data reconciliation</li>
+                            <li><strong>Slow backends dominate</strong><br>Database queries (2-5s)<br>MCP overhead: ~50ms (1-2%)</li>
+                            <li><strong>Complex data retrieval</strong><br>API calls, file processing</li>
+                        </ul>
+                    </div>
+                    <div style="background: #fff5f5; padding: 30px; border-radius: 15px; border: 3px solid #f56565;">
+                        <h3 style="color: #f56565;">✗ Latency Impact: HIGH</h3>
+                        <ul style="margin-top: 20px;">
+                            <li><strong>Real-time chat</strong><br>Conversational UI with streaming</li>
+                            <li><strong>High-frequency operations</strong><br>Trading decisions, real-time alerts</li>
+                            <li><strong>Interactive co-pilots</strong><br>Code completion, live suggestions</li>
+                            <li><strong>Ultra-low latency needs</strong><br>Requirements under 100ms</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="background: #fef5e7; padding: 25px; border-radius: 15px; margin-top: 30px; border-left: 5px solid #d97706;">
+                    <strong style="font-size: 20px; color: #744210;">💡 Hybrid Approach</strong>
+                    <p style="margin-top: 15px; font-size: 16px; line-height: 1.6;">
+                        • Use <strong>direct API calls</strong> for latency-critical paths<br>
+                        • Use <strong>MCP</strong> for complex, governed, reusable integrations<br>
+                        • Best of both worlds: optimize where it matters
+                    </p>
+                </div>
+            </div>
+            <div class="slide-number">10 / 12</div>
+        </div>
+
+        <!-- Slide 11: When to Use MCP -->
+        <div class="slide">
+            <h2>Decision Framework: When to Use MCP?</h2>
+            <div class="content">
+                <div class="decision-box">
+                    <div class="use-mcp">
+                        <h3>✅ USE MCP</h3>
+                        <ul style="margin-top: 20px;">
+                            <li>Building platform for multiple agents</li>
+                            <li>Need governance, security, compliance</li>
+                            <li>Working with legacy/hybrid systems</li>
+                            <li>Want to swap LLMs without rewrites</li>
+                            <li>Reusability matters (3+ agents)</li>
+                            <li>Enterprise production systems</li>
+                            <li>Multi-team organization</li>
+                            <li>Long-term maintainability critical</li>
+                        </ul>
+                    </div>
+                    <div class="skip-mcp">
+                        <h3>❌ SKIP MCP (for now)</h3>
+                        <ul style="margin-top: 20px;">
+                            <li>Single agent, single integration</li>
+                            <li>Prototype/POC (speed to market)</li>
+                            <li>Ultra-low latency required (&lt;100ms)</li>
+                            <li>Simple CRUD with modern REST APIs</li>
+                            <li>Won't change/evolve significantly</li>
+                            <li>No reusability needs</li>
+                            <li>Solo developer/small team</li>
+                            <li>Short-lived project</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-top: 30px; text-align: center;">
+                    <strong style="font-size: 24px;">ROI Calculation</strong>
+                    <p style="margin-top: 15px; font-size: 18px;">
+                        After ~3-5 agents using same data sources,<br>
+                        MCP pays for itself in reduced development & maintenance
+                    </p>
+                </div>
+            </div>
+            <div class="slide-number">11 / 12</div>
+        </div>
+
+        <!-- Slide 12: Summary -->
+        <div class="slide">
+            <h2>Key Takeaways</h2>
+            <div class="content">
+                <div class="benefit-grid">
+                    <div class="benefit-card">
+                        <h3>🎯 What is MCP?</h3>
+                        <p>Open protocol for connecting AI models to data sources and tools. Think "USB for AI" - one standard interface for everything.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>🏢 Why Enterprises Love It</h3>
+                        <p>Centralized security, governance, and reusability. Write once, use across all agents and models. Platform team maintains quality.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>🚀 Created by Anthropic</h3>
+                        <p>Launched Nov 2024 as open-source (MIT). Learning from past plugin failures. Model-agnostic by design. Community-driven ecosystem.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h3>⚖️ The Tradeoff</h3>
+                        <p>Adds ~50ms latency but gains standardization. Worth it for production systems at scale. Skip for simple prototypes.</p>
+                    </div>
+                </div>
+                <div class="usb-analogy" style="margin-top: 40px;">
+                    <h3 style="font-size: 36px;">The Future Vision</h3>
+                    <p style="font-size: 20px; margin-top: 20px; color: #4a5568;">
+                        "Just like you can plug any USB device into any computer,<br>
+                        you should be able to plug any data source into any AI model<br>
+                        through a standard protocol."
+                    </p>
+                    <p style="margin-top: 30px; font-weight: 600; color: #667eea; font-size: 18px;">
+                        MCP is in the "early HTTP" phase - the protocol is solid,<br>
+                        adoption is growing, and it could become the standard<br>
+                        for AI-data connectivity over the next few years.
+                    </p>
+                </div>
+            </div>
+            <div class="slide-number">12 / 12</div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

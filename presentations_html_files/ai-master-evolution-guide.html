@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Evolution: From Rules to Agents — Complete Learning Guide</title>
+<style>
+  body {font-family: "Segoe UI", Arial, sans-serif; background:#f9fafc; color:#222; margin:0;}
+  section {padding:40px 60px; border-bottom:1px solid #e0e0e0;}
+  h1,h2,h3 {margin-top:0;color:#003366;}
+  h1 {font-size:38px; text-align:center; margin:40px 0 20px 0;}
+  h2 {font-size:28px; margin-top:30px; border-bottom:3px solid #667eea; padding-bottom:10px;}
+  h3 {font-size:22px; margin-top:20px; color:#004a99;}
+  h4 {font-size:18px; margin-top:15px; color:#333;}
+  
+  .hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 60px;
+    text-align: center;
+    border-bottom: none;
+  }
+  .hero h1 {color: white; font-size: 42px; margin-bottom: 15px;}
+  .hero .subtitle {font-size: 20px; opacity: 0.95; margin-bottom: 30px;}
+  .hero .stats {display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap;}
+  .hero .stat-box {background: rgba(255,255,255,0.2); padding: 20px 30px; border-radius: 10px; backdrop-filter: blur(10px);}
+  .hero .stat-box .number {font-size: 32px; font-weight: bold;}
+  .hero .stat-box .label {font-size: 14px; opacity: 0.9; margin-top: 5px;}
+  
+  .tl-dr {
+    background: #eaf4ff;
+    border-left: 5px solid #004a99;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+  .tl-dr strong {font-size: 18px; color: #003366;}
+  
+  .highlight {background:#eaf4ff; padding:20px; border-left:5px solid #004a99; border-radius: 8px; margin: 20px 0;}
+  
+  .timeline {
+    position: relative;
+    margin: 40px 0;
+    padding-left: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, #667eea, #764ba2);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    padding-left: 40px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -48px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #667eea;
+    border: 4px solid white;
+    box-shadow: 0 0 0 2px #667eea;
+  }
+  .timeline-item .era {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .timeline-item h3 {margin-top: 5px;}
+  
+  .grid {display:flex; flex-wrap:wrap; gap:20px; margin: 20px 0;}
+  .card {
+    flex:1 1 300px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:white;
+    padding:25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .card h3 {margin-top:0; color:#003366;}
+  .card h4 {margin-top:15px; color:#004a99;}
+  
+  .architecture {
+    background: #f5f7fa;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .architecture .box {
+    background: white;
+    border: 2px solid #667eea;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 10px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .architecture .arrow {
+    display: inline-block;
+    color: #667eea;
+    font-size: 24px;
+    margin: 0 10px;
+  }
+  
+  .code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .code-block .comment {color: #6a9955;}
+  .code-block .keyword {color: #569cd6;}
+  .code-block .string {color: #ce9178;}
+  .code-block .function {color: #dcdcaa;}
+  
+  .pros-cons {display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;}
+  .pros-box, .cons-box {
+    padding: 20px;
+    border-radius: 8px;
+  }
+  .pros-box {background: #e6f7f1; border-left: 5px solid #006400;}
+  .cons-box {background: #ffe6e6; border-left: 5px solid #8b0000;}
+  .pros-box h4, .cons-box h4 {margin-top: 0;}
+  .pros-box h4 {color: #006400;}
+  .cons-box h4 {color: #8b0000;}
+  .pros-box ul, .cons-box ul {margin: 10px 0 0 20px;}
+  
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
+  .metric-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .metric-card .value {font-size: 28px; font-weight: bold; margin-bottom: 5px;}
+  .metric-card .label {font-size: 14px; opacity: 0.95;}
+  
+  table {border-collapse: collapse; width:100%; margin:20px 0;}
+  th, td {border:1px solid #ddd; padding:12px; text-align:left; vertical-align: top;}
+  th {background:#003366; color:#fff; font-weight: 600;}
+  tr:nth-child(even){background:#f2f6fa;}
+  
+  .comparison-highlight {background: #fffbea; border-left: 5px solid #d97706; padding: 15px; margin: 15px 0; border-radius: 8px;}
+  
+  .nav-links {
+    background: #003366;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    padding: 10px 20px;
+    background: #004a99;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  .nav-links a:hover {background: #0056b3;}
+  
+  .learning-plan {
+    background: white;
+    border: 2px solid #667eea;
+    border-radius: 10px;
+    padding: 25px;
+    margin: 20px 0;
+  }
+  .week-section {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  .week-section h4 {color: #667eea; margin-top: 0;}
+  
+  @media (max-width: 768px) {
+    section {padding: 30px 20px;}
+    .pros-cons, .grid {grid-template-columns: 1fr;}
+    h1 {font-size: 32px;}
+    .hero .stats {flex-direction: column; gap: 20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🚀 AI Evolution: From Rules to Agents</h1>
+  <div class="subtitle">A Complete Learning Guide for Data & ML Engineers</div>
+  <p style="max-width: 800px; margin: 0 auto; font-size: 16px; line-height: 1.6;">
+    Understand the 40-year journey of AI systems through a single, practical use case: 
+    <strong>Building an L1 IT Support Agent for Banking AI & Data Platform</strong>
+  </p>
+  <div class="stats">
+    <div class="stat-box">
+      <div class="number">6 Stages</div>
+      <div class="label">Rule-Based → Agentic AI</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">1 Use Case</div>
+      <div class="label">Throughout All Stages</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">4 Weeks</div>
+      <div class="label">Structured Learning Plan</div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <h2>🎯 Why This Guide Exists</h2>
+  
+  <div class="tl-dr">
+    <strong>TL;DR</strong><br>
+    Your team needs to understand HOW and WHEN to use AI approaches. This guide shows the evolution from 1980s rule-based systems to 2024 multi-agent workflows using ONE consistent use case, so you can compare approaches directly and make informed decisions.
+  </div>
+  
+  <h3>The Problem We're Solving</h3>
+  <p>Recent training failed because:</p>
+  <ul style="line-height: 1.8;">
+    <li><strong>No depth:</strong> Covered concepts superficially without real understanding</li>
+    <li><strong>No connections:</strong> Each technique presented in isolation, no clear evolution</li>
+    <li><strong>No practical examples:</strong> Theory without code or real-world context</li>
+    <li><strong>No decision framework:</strong> When to use what? Why did each approach emerge?</li>
+  </ul>
+  
+  <h3>What Makes This Different</h3>
+  <div class="grid">
+    <div class="card">
+      <h4>🎯 One Use Case Throughout</h4>
+      <p>L1 IT Support Agent handles data pipeline failures, access requests, query optimization. You'll see how EACH stage tackles the same 500+ tickets/month problem.</p>
+    </div>
+    <div class="card">
+      <h4>📊 Real Metrics</h4>
+      <p>Not just theory — see actual resolution rates, latency, costs, and development time for each approach.</p>
+    </div>
+    <div class="card">
+      <h4>💻 Working Code</h4>
+      <p>Runnable Python examples using Google ADK and Gemini. Not pseudocode — actual implementations you can test.</p>
+    </div>
+    <div class="card">
+      <h4>🔄 Clear Evolution</h4>
+      <p>Understand WHY each innovation was needed and what problems it solved from the previous stage.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>📋 The Use Case: L1 IT Support Agent</h2>
+  
+  <div class="highlight">
+    <strong>Context:</strong> Banking company with AI & Data Platform supporting 1000+ users
+  </div>
+  
+  <h3>Current Situation</h3>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="value">500+</div>
+      <div class="label">Tickets/Month</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">4 hours</div>
+      <div class="label">Avg Resolution Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">15</div>
+      <div class="label">Support Categories</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">24/7</div>
+      <div class="label">Coverage Needed</div>
+    </div>
+  </div>
+  
+  <h3>Target Goals</h3>
+  <ul style="line-height: 1.8;">
+    <li><strong>70% automation rate</strong> — Reduce human intervention</li>
+    <li><strong>&lt;30 min resolution</strong> — Faster ticket handling</li>
+    <li><strong>40% auto-resolution</strong> — Agent executes fixes, not just suggests</li>
+    <li><strong>99.9% accuracy</strong> — Critical for banking compliance</li>
+  </ul>
+  
+  <h3>Ticket Types We Handle</h3>
+  <div class="grid">
+    <div class="card">
+      <h4>Data Pipeline Issues</h4>
+      <ul style="font-size: 14px;">
+        <li>Pipeline failures (30% of tickets)</li>
+        <li>Job timeout errors</li>
+        <li>Schema validation failures</li>
+        <li>Dependency conflicts</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Data Quality Issues</h4>
+      <ul style="font-size: 14px;">
+        <li>Null values in critical fields</li>
+        <li>Duplicate records</li>
+        <li>Format mismatches</li>
+        <li>Data freshness alerts</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Access & Permissions</h4>
+      <ul style="font-size: 14px;">
+        <li>Database access requests</li>
+        <li>Role-based permissions</li>
+        <li>API key generation</li>
+        <li>Service account setup</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Query Optimization</h4>
+      <ul style="font-size: 14px;">
+        <li>Slow query analysis</li>
+        <li>Index recommendations</li>
+        <li>Resource usage issues</li>
+        <li>Cost optimization</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>🗺️ The 6-Stage Evolution Timeline</h2>
+  
+  <div class="timeline">
+    <div class="timeline-item">
+      <span class="era">1980s-2010s</span>
+      <h3>Stage 1: Rule-Based Systems</h3>
+      <p>Decision trees and keyword matching. Rigid but predictable.</p>
+    </div>
+    
+    <div class="timeline-item">
+      <span class="era">2010s</span>
+      <h3>Stage 2: Traditional ML</h3>
+      <p>Classification models learned patterns from historical data.</p>
+    </div>
+    
+    <div class="timeline-item">
+      <span class="era">2022+</span>
+      <h3>Stage 3: GenAI + Prompting</h3>
+      <p>Large Language Models with few-shot learning brought flexibility.</p>
+    </div>
+    
+    <div class="timeline-item">
+      <span class="era">2023+</span>
+      <h3>Stage 4: RAG (Retrieval-Augmented Generation)</h3>
+      <p>Grounded generation with vector search eliminated hallucinations.</p>
+    </div>
+    
+    <div class="timeline-item">
+      <span class="era">2023+</span>
+      <h3>Stage 5: Fine-Tuning</h3>
+      <p>Custom models trained on domain data for consistency.</p>
+    </div>
+    
+    <div class="timeline-item">
+      <span class="era">2024+</span>
+      <h3>Stage 6: Agentic AI Workflows</h3>
+      <p>Multi-agent systems with tools that can plan and execute actions.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>📚 Stage 1: Rule-Based Systems (1980s-2010s)</h2>
+  
+  <div class="tl-dr">
+    <strong>Bottom Line:</strong> If-then logic that matches keywords to predefined responses. Simple, predictable, but breaks easily with variations.
+  </div>
+  
+  <h3>How It Works for L1 Support</h3>
+  <p>The system uses decision trees to match ticket text against known patterns:</p>
+  
+  <div class="code-block">
+<span class="keyword">def</span> <span class="function">classify_ticket</span>(ticket_text):
+    <span class="comment"># Simple keyword matching</span>
+    <span class="keyword">if</span> <span class="string">"schema"</span> <span class="keyword">in</span> ticket_text.lower():
+        <span class="keyword">return</span> {
+            <span class="string">"category"</span>: <span class="string">"schema_validation"</span>,
+            <span class="string">"solution"</span>: <span class="string">"Run schema sync job"</span>,
+            <span class="string">"confidence"</span>: <span class="string">"high"</span>
+        }
+    <span class="keyword">elif</span> <span class="string">"timeout"</span> <span class="keyword">in</span> ticket_text.lower():
+        <span class="keyword">return</span> {
+            <span class="string">"category"</span>: <span class="string">"pipeline_timeout"</span>,
+            <span class="string">"solution"</span>: <span class="string">"Increase job timeout to 2h"</span>,
+            <span class="string">"confidence"</span>: <span class="string">"medium"</span>
+        }
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> {<span class="string">"category"</span>: <span class="string">"unknown"</span>, <span class="string">"solution"</span>: <span class="string">"Escalate to L2"</span>}
+  </div>
+  
+  <h3>Architecture</h3>
+  <div class="architecture">
+    <div class="box">Ticket Arrives</div>
+    <span class="arrow">→</span>
+    <div class="box">Keyword Extraction</div>
+    <span class="arrow">→</span>
+    <div class="box">Decision Tree</div>
+    <span class="arrow">→</span>
+    <div class="box">Canned Response</div>
+  </div>
+  
+  <h3>Performance Metrics</h3>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="value">~20%</div>
+      <div class="label">Tickets Handled</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">&lt;100ms</div>
+      <div class="label">Response Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">2 weeks</div>
+      <div class="label">Development Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">$0</div>
+      <div class="label">Infrastructure Cost</div>
+    </div>
+  </div>
+  
+  <div class="pros-cons">
+    <div class="pros-box">
+      <h4>✅ Strengths</h4>
+      <ul>
+        <li>Extremely fast (&lt;100ms)</li>
+        <li>100% predictable outputs</li>
+        <li>No training data needed</li>
+        <li>Easy to debug and explain</li>
+        <li>Works offline</li>
+        <li>Zero infrastructure costs</li>
+      </ul>
+    </div>
+    <div class="cons-box">
+      <h4>❌ Limitations</h4>
+      <ul>
+        <li>Only handles ~20% of tickets</li>
+        <li>Breaks with typos or variations</li>
+        <li>Requires manual rule maintenance</li>
+        <li>No learning from new patterns</li>
+        <li>Cannot handle complex reasoning</li>
+        <li>Rigid, no flexibility</li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3>Why It Failed for Our Use Case</h3>
+  <div class="comparison-highlight">
+    <strong>Real Example:</strong><br>
+    ✅ Matches: "Pipeline failed due to schema mismatch"<br>
+    ❌ Misses: "The job crashed because the schema was wrong"<br>
+    ❌ Misses: "Schema error in ETL process" (typo in "schema")<br>
+    <br>
+    <strong>Result:</strong> Had to maintain 200+ rules, still only caught 20% of tickets.
+  </div>
+  
+  <h3>When to Still Use This Approach</h3>
+  <ul style="line-height: 1.8;">
+    <li>Ultra-low latency required (&lt;50ms)</li>
+    <li>Very limited, well-defined problem space (5-10 scenarios)</li>
+    <li>100% predictability is critical (safety systems, compliance)</li>
+    <li>Offline operation needed</li>
+    <li>Zero budget for ML infrastructure</li>
+  </ul>
+</section>
+
+<section>
+  <h2>📊 Stage 2: Traditional ML (2010s)</h2>
+  
+  <div class="tl-dr">
+    <strong>Bottom Line:</strong> Machine learning models trained on historical tickets to classify and predict. Better coverage than rules, but requires feature engineering and labeled data.
+  </div>
+  
+  <h3>How It Works for L1 Support</h3>
+  <p>Train classification models on historical ticket data to predict categories and suggest solutions:</p>
+  
+  <div class="code-block">
+<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier
+<span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> TfidfVectorizer
+
+<span class="comment"># Feature engineering: Convert text to numbers</span>
+vectorizer = TfidfVectorizer(max_features=<span class="string">1000</span>)
+X_train = vectorizer.fit_transform(historical_tickets)
+y_train = ticket_categories  <span class="comment"># Labels: "schema_error", "timeout", etc.</span>
+
+<span class="comment"># Train classifier</span>
+model = RandomForestClassifier(n_estimators=<span class="string">100</span>)
+model.fit(X_train, y_train)
+
+<span class="comment"># Predict for new ticket</span>
+<span class="keyword">def</span> <span class="function">classify_ticket_ml</span>(new_ticket):
+    X_new = vectorizer.transform([new_ticket])
+    category = model.predict(X_new)[<span class="string">0</span>]
+    probability = model.predict_proba(X_new).max()
+    <span class="keyword">return</span> category, probability
+  </div>
+  
+  <h3>Architecture</h3>
+  <div class="architecture">
+    <div class="box">Historical Tickets</div>
+    <span class="arrow">→</span>
+    <div class="box">Feature Engineering<br>(TF-IDF)</div>
+    <span class="arrow">→</span>
+    <div class="box">Train Model<br>(Random Forest)</div>
+    <span class="arrow">→</span>
+    <div class="box">Deploy Model</div>
+    <br>
+    <div class="box">New Ticket</div>
+    <span class="arrow">→</span>
+    <div class="box">Vectorize</div>
+    <span class="arrow">→</span>
+    <div class="box">Predict Category</div>
+    <span class="arrow">→</span>
+    <div class="box">Return Solution</div>
+  </div>
+  
+  <h3>Performance Metrics</h3>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="value">~50%</div>
+      <div class="label">Tickets Handled</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">~200ms</div>
+      <div class="label">Response Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">6 weeks</div>
+      <div class="label">Development Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">~$500/mo</div>
+      <div class="label">Infrastructure Cost</div>
+    </div>
+  </div>
+  
+  <div class="pros-cons">
+    <div class="pros-box">
+      <h4>✅ Strengths</h4>
+      <ul>
+        <li>Learns patterns from data</li>
+        <li>Handles typos and variations better</li>
+        <li>Scales to 50% ticket coverage</li>
+        <li>Probabilistic confidence scores</li>
+        <li>Can retrain as new data arrives</li>
+        <li>Still relatively fast (~200ms)</li>
+      </ul>
+    </div>
+    <div class="cons-box">
+      <h4>❌ Limitations</h4>
+      <ul>
+        <li>Requires 1000s of labeled examples</li>
+        <li>Needs ML expertise (feature engineering)</li>
+        <li>Cannot generate explanations</li>
+        <li>Struggles with new ticket types</li>
+        <li>Brittle to data distribution shifts</li>
+        <li>Maintenance overhead (retraining)</li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3>Why We Needed Better (Evolution Trigger)</h3>
+  <div class="comparison-highlight">
+    <strong>The Problems:</strong><br>
+    <ul style="margin: 10px 0;">
+      <li><strong>Cannot generate natural language explanations</strong> — Users want "why" not just categories</li>
+      <li><strong>Poor zero-shot performance</strong> — New ticket types require retraining</li>
+      <li><strong>Feature engineering bottleneck</strong> — Domain experts needed to craft features</li>
+      <li><strong>No reasoning ability</strong> — Can't chain multiple steps or provide troubleshooting</li>
+    </ul>
+    <strong>What we needed:</strong> A system that could understand context, generate natural language, and handle novel situations without retraining.
+  </div>
+  
+  <h3>When to Still Use This Approach</h3>
+  <ul style="line-height: 1.8;">
+    <li>Well-defined classification problem with plenty of labeled data</li>
+    <li>Low latency requirements (50-200ms)</li>
+    <li>Interpretability through feature importance</li>
+    <li>Budget constraints (cheaper than LLM APIs)</li>
+    <li>Data stays within controlled environment (no external APIs)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>🤖 Stage 3: GenAI + Prompting (2022+)</h2>
+  
+  <div class="tl-dr">
+    <strong>Bottom Line:</strong> Large Language Models with few-shot learning bring natural language understanding and generation. Flexible but can hallucinate without grounding.
+  </div>
+  
+  <h3>How It Works for L1 Support</h3>
+  <p>Use LLMs (Gemini, GPT-4) with carefully crafted prompts and examples:</p>
+  
+  <div class="code-block">
+<span class="keyword">import</span> google.generativeai <span class="keyword">as</span> genai
+
+<span class="comment"># Configure Gemini</span>
+genai.configure(api_key=<span class="string">"YOUR_API_KEY"</span>)
+model = genai.GenerativeModel(<span class="string">'gemini-1.5-pro'</span>)
+
+<span class="comment"># Craft prompt with role and examples</span>
+prompt = <span class="string">"""You are an L1 IT Support Agent for a banking data platform.
+
+EXAMPLES:
+Ticket: "Pipeline job-123 failed with schema mismatch error"
+Response: This is a schema validation issue. Solution: Run `schema_sync_job` 
+for table ABC. Then restart pipeline job-123.
+
+Ticket: "Query timeout on dashboard_report"
+Response: Query exceeded 30s limit. Solution: Add indexes on date_column 
+and user_id, or increase timeout to 60s in config.
+
+NEW TICKET: """</span> + user_ticket
+
+response = model.generate_content(prompt)
+<span class="keyword">print</span>(response.text)
+  </div>
+  
+  <h3>Architecture</h3>
+  <div class="architecture">
+    <div class="box">User Ticket</div>
+    <span class="arrow">→</span>
+    <div class="box">Construct Prompt<br>(Role + Examples)</div>
+    <span class="arrow">→</span>
+    <div class="box">LLM API<br>(Gemini/GPT-4)</div>
+    <span class="arrow">→</span>
+    <div class="box">Generate Response</div>
+  </div>
+  
+  <h3>Performance Metrics</h3>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="value">~50%</div>
+      <div class="label">Tickets Handled</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">2-5 sec</div>
+      <div class="label">Response Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">1-2 weeks</div>
+      <div class="label">Development Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">$2K-5K/mo</div>
+      <div class="label">API Costs (500 tix)</div>
+    </div>
+  </div>
+  
+  <div class="pros-cons">
+    <div class="pros-box">
+      <h4>✅ Strengths</h4>
+      <ul>
+        <li>Natural language understanding</li>
+        <li>Zero-shot and few-shot learning</li>
+        <li>Generates helpful explanations</li>
+        <li>Handles novel situations</li>
+        <li>Fast to prototype (days not weeks)</li>
+        <li>No training data required</li>
+      </ul>
+    </div>
+    <div class="cons-box">
+      <h4>❌ Limitations</h4>
+      <ul>
+        <li>Can hallucinate solutions</li>
+        <li>No access to live data/runbooks</li>
+        <li>High API costs at scale</li>
+        <li>Inconsistent outputs</li>
+        <li>Slower latency (2-5s)</li>
+        <li>Compliance concerns (data to 3rd party)</li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3>Why We Needed Better (Evolution Trigger)</h3>
+  <div class="comparison-highlight">
+    <strong>Critical Incident:</strong><br>
+    User: "How do I fix null values in customer_transactions table?"<br>
+    LLM Response: "Run UPDATE customer_transactions SET amount = 0 WHERE amount IS NULL"<br>
+    <br>
+    <strong>Problem:</strong> This could corrupt financial data! The LLM hallucinated a solution without checking company-specific runbooks that explicitly say "Never modify financial tables without approval."<br>
+    <br>
+    <strong>What we needed:</strong> A way to ground LLM responses in our actual documentation and data.
+  </div>
+  
+  <h3>When to Still Use This Approach</h3>
+  <ul style="line-height: 1.8;">
+    <li>Rapid prototyping and POC validation</li>
+    <li>Low-volume use cases (&lt;1000 requests/day)</li>
+    <li>Non-critical applications where occasional errors are acceptable</li>
+    <li>When you don't have existing knowledge base to retrieve from</li>
+    <li>Creative or open-ended tasks</li>
+  </ul>
+</section>
+
+<section>
+  <h2>🔍 Stage 4: RAG - Retrieval-Augmented Generation (2023+)</h2>
+  
+  <div class="tl-dr">
+    <strong>Bottom Line:</strong> Combine vector search with LLM generation to ground responses in real documentation. Eliminates hallucinations by providing source context.
+  </div>
+  
+  <h3>How It Works for L1 Support</h3>
+  <p>Index runbooks, documentation, and past solutions in a vector database. Retrieve relevant context before generating responses:</p>
+  
+  <div class="code-block">
+<span class="keyword">import</span> chromadb
+<span class="keyword">from</span> sentence_transformers <span class="keyword">import</span> SentenceTransformer
+
+<span class="comment"># 1. Index knowledge base</span>
+client = chromadb.Client()
+collection = client.create_collection(<span class="string">"support_docs"</span>)
+
+<span class="comment"># Add runbooks to vector DB</span>
+embedder = SentenceTransformer(<span class="string">'all-MiniLM-L6-v2'</span>)
+<span class="keyword">for</span> doc <span class="keyword">in</span> runbooks:
+    embedding = embedder.encode(doc[<span class="string">'text'</span>])
+    collection.add(
+        embeddings=[embedding],
+        documents=[doc[<span class="string">'text'</span>]],
+        ids=[doc[<span class="string">'id'</span>]]
+    )
+
+<span class="comment"># 2. Retrieve relevant docs for new ticket</span>
+<span class="keyword">def</span> <span class="function">answer_with_rag</span>(ticket):
+    <span class="comment"># Search vector DB</span>
+    query_embedding = embedder.encode(ticket)
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=<span class="string">3</span>
+    )
+    
+    <span class="comment"># Construct grounded prompt</span>
+    context = <span class="string">"\n\n"</span>.join(results[<span class="string">'documents'</span>][<span class="string">0</span>])
+    prompt = <span class="string">f"""Using ONLY the following documentation, answer the ticket.
+
+DOCUMENTATION:
+{context}
+
+TICKET: {ticket}
+
+ANSWER (with source references):"""</span>
+    
+    response = model.generate_content(prompt)
+    <span class="keyword">return</span> response.text, results[<span class="string">'documents'</span>][<span class="string">0</span>]  <span class="comment"># Return with sources</span>
+  </div>
+  
+  <h3>Architecture</h3>
+  <div class="architecture">
+    <div class="box">User Ticket</div>
+    <span class="arrow">→</span>
+    <div class="box">Embed Query</div>
+    <span class="arrow">→</span>
+    <div class="box">Vector Search<br>(Top 3 Docs)</div>
+    <span class="arrow">→</span>
+    <div class="box">Inject Context</div>
+    <span class="arrow">→</span>
+    <div class="box">LLM Generate</div>
+    <span class="arrow">→</span>
+    <div class="box">Response + Sources</div>
+  </div>
+  
+  <h3>Performance Metrics</h3>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="value">~70%</div>
+      <div class="label">Tickets Handled</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">3-6 sec</div>
+      <div class="label">Response Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">3-4 weeks</div>
+      <div class="label">Development Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">$3K-6K/mo</div>
+      <div class="label">Total Costs</div>
+    </div>
+  </div>
+  
+  <div class="pros-cons">
+    <div class="pros-box">
+      <h4>✅ Strengths</h4>
+      <ul>
+        <li>Grounded in actual documentation</li>
+        <li>Provides source citations</li>
+        <li>Reduced hallucinations (~5% vs 30%)</li>
+        <li>Knowledge stays up-to-date</li>
+        <li>Explainable and auditable</li>
+        <li>Handles 70% of tickets</li>
+      </ul>
+    </div>
+    <div class="cons-box">
+      <h4>❌ Limitations</h4>
+      <ul>
+        <li>Quality depends on chunking strategy</li>
+        <li>Cannot learn new behavior patterns</li>
+        <li>Still some inconsistency in tone</li>
+        <li>Additional latency from retrieval</li>
+        <li>Requires vector DB infrastructure</li>
+        <li>Doesn't execute actions (just suggests)</li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3>Why We Needed Better (Evolution Trigger)</h3>
+  <div class="comparison-highlight">
+    <strong>Limitations in Production:</strong><br>
+    <ul style="margin: 10px 0;">
+      <li><strong>Inconsistent communication style</strong> — Sometimes formal, sometimes casual, not aligned with bank's tone</li>
+      <li><strong>Cannot learn company-specific patterns</strong> — Every response starts fresh, no memory of what works</li>
+      <li><strong>High cost at scale</strong> — Processing 500 tickets/day with long context = $5K+/month</li>
+      <li><strong>Still suggests, doesn't execute</strong> — Requires human to run the fix</li>
+    </ul>
+    <strong>What we needed:</strong> Options for (1) custom behavior/tone AND (2) autonomous execution.
+  </div>
+  
+  <h3>When to Still Use This Approach</h3>
+  <ul style="line-height: 1.8;">
+    <li><strong>Best choice for most production Q&A systems</strong></li>
+    <li>Knowledge base changes frequently (daily/weekly updates)</li>
+    <li>Need explainability and source citations</li>
+    <li>Don't need custom tone/behavior (standard LLM voice is fine)</li>
+    <li>Moderate volume (100-10K requests/day)</li>
+    <li>Compliance requires data traceability</li>
+  </ul>
+</section>
+
+<section>
+  <h2>🎯 Stage 5: Fine-Tuning (2023+)</h2>
+  
+  <div class="tl-dr">
+    <strong>Bottom Line:</strong> Train a custom model on your domain data to learn consistent behavior, tone, and reasoning patterns. Best for high-volume, style-critical applications.
+  </div>
+  
+  <h3>How It Works for L1 Support</h3>
+  <p>Create training dataset from resolved tickets and fine-tune Gemini to match your support team's behavior:</p>
+  
+  <div class="code-block">
+<span class="comment"># 1. Prepare training data (JSONL format)</span>
+training_data = [
+    {
+        <span class="string">"messages"</span>: [
+            {<span class="string">"role"</span>: <span class="string">"user"</span>, <span class="string">"content"</span>: <span class="string">"Pipeline ABC failed: schema mismatch"</span>},
+            {<span class="string">"role"</span>: <span class="string">"assistant"</span>, <span class="string">"content"</span>: <span class="string">"I've identified this as a schema validation issue. Per standard procedure SOP-451, please run the schema sync job for table customers_prod, then restart pipeline ABC via the control panel. ETA: 5 minutes. -Banking IT Support"</span>}
+        ]
+    },
+    <span class="comment"># ... 1000+ more examples ...</span>
+]
+
+<span class="comment"># 2. Fine-tune via API</span>
+<span class="keyword">from</span> google.ai <span class="keyword">import</span> generativelanguage
+
+client = generativelanguage.GenerativeServiceClient()
+operation = client.create_tuned_model(
+    source_model=<span class="string">"models/gemini-1.5-flash"</span>,
+    training_data=training_data,
+    hyperparameters={
+        <span class="string">"learning_rate"</span>: <span class="string">0.001</span>,
+        <span class="string">"epochs"</span>: <span class="string">3</span>
+    }
+)
+
+<span class="comment"># 3. Use fine-tuned model</span>
+tuned_model = genai.GenerativeModel(<span class="string">'tunedModels/my-support-agent-xyz'</span>)
+response = tuned_model.generate_content(new_ticket)
+  </div>
+  
+  <h3>Architecture</h3>
+  <div class="architecture">
+    <div class="box">Historical Tickets<br>(1000+ examples)</div>
+    <span class="arrow">→</span>
+    <div class="box">Format Training Data<br>(Prompt-Completion)</div>
+    <span class="arrow">→</span>
+    <div class="box">Fine-Tune Model<br>(Hours/Days)</div>
+    <br>
+    <div class="box">Deploy Custom Model</div>
+    <span class="arrow">→</span>
+    <div class="box">New Ticket</div>
+    <span class="arrow">→</span>
+    <div class="box">Direct Inference</div>
+    <span class="arrow">→</span>
+    <div class="box">Consistent Response</div>
+  </div>
+  
+  <h3>Performance Metrics</h3>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="value">~70%</div>
+      <div class="label">Tickets Handled</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">1-2 sec</div>
+      <div class="label">Response Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">6-8 weeks</div>
+      <div class="label">Development Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">$1K-2K/mo</div>
+      <div class="label">Inference Costs</div>
+    </div>
+  </div>
+  
+  <div class="pros-cons">
+    <div class="pros-box">
+      <h4>✅ Strengths</h4>
+      <ul>
+        <li>Consistent tone and formatting</li>
+        <li>Learns company-specific patterns</li>
+        <li>Lower cost per query at scale</li>
+        <li>Faster inference (no retrieval)</li>
+        <li>Can learn complex reasoning</li>
+        <li>Better at structured outputs (JSON)</li>
+      </ul>
+    </div>
+    <div class="cons-box">
+      <h4>❌ Limitations</h4>
+      <ul>
+        <li>Requires 1000+ quality examples</li>
+        <li>Slow to update (retrain needed)</li>
+        <li>High upfront training cost</li>
+        <li>ML expertise needed</li>
+        <li>Can bake in outdated info</li>
+        <li>Still doesn't execute actions</li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3>Combining RAG + Fine-Tuning (Best Practice)</h3>
+  <div class="comparison-highlight">
+    <strong>The Winning Strategy:</strong><br>
+    <ul style="margin: 10px 0;">
+      <li><strong>Fine-tune for:</strong> Consistent tone, formatting, reasoning patterns, company terminology</li>
+      <li><strong>RAG for:</strong> Up-to-date factual information, policies, runbooks</li>
+    </ul>
+    <strong>Example:</strong> Fine-tuned model speaks like your team ("Per SOP-451..."), RAG ensures it cites current procedures (not outdated ones).<br>
+    <strong>Result:</strong> Best of both worlds — consistency + freshness.
+  </div>
+  
+  <h3>When to Use This Approach</h3>
+  <ul style="line-height: 1.8;">
+    <li>High volume (10K+ requests/day) — cost savings matter</li>
+    <li>Consistent tone/brand voice is critical</li>
+    <li>Need structured outputs (JSON, XML) reliably</li>
+    <li>Have 1000+ high-quality examples</li>
+    <li>Domain-specific jargon and patterns</li>
+    <li>Long-term deployment (ROI from training investment)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>🤝 Stage 6: Agentic AI Workflows (2024+)</h2>
+  
+  <div class="tl-dr">
+    <strong>Bottom Line:</strong> Multi-agent systems that can plan, use tools, and execute actions autonomously. The cutting edge — moves from "suggest solutions" to "fix problems."
+  </div>
+  
+  <h3>How It Works for L1 Support</h3>
+  <p>Orchestrate specialized agents with tool access using Google ADK (Agentic Development Kit):</p>
+  
+  <div class="code-block">
+<span class="keyword">from</span> adk <span class="keyword">import</span> Agent, Tool, Orchestrator
+
+<span class="comment"># Define specialized agents</span>
+diagnostic_agent = Agent(
+    name=<span class="string">"DiagnosticAgent"</span>,
+    role=<span class="string">"Analyze ticket and determine root cause"</span>,
+    model=<span class="string">"gemini-1.5-pro"</span>,
+    tools=[<span class="string">"query_logs"</span>, <span class="string">"check_pipeline_status"</span>]
+)
+
+knowledge_agent = Agent(
+    name=<span class="string">"KnowledgeAgent"</span>,
+    role=<span class="string">"Search runbooks for solutions"</span>,
+    model=<span class="string">"gemini-1.5-flash"</span>,
+    tools=[<span class="string">"vector_search"</span>, <span class="string">"retrieve_docs"</span>]
+)
+
+resolution_agent = Agent(
+    name=<span class="string">"ResolutionAgent"</span>,
+    role=<span class="string">"Execute fix and verify resolution"</span>,
+    model=<span class="string">"gemini-1.5-pro"</span>,
+    tools=[<span class="string">"run_schema_sync"</span>, <span class="string">"restart_pipeline"</span>, <span class="string">"verify_job"</span>]
+)
+
+<span class="comment"># Orchestrate workflow</span>
+orchestrator = Orchestrator(
+    agents=[diagnostic_agent, knowledge_agent, resolution_agent],
+    workflow=<span class="string">"sequential"</span>  <span class="comment"># Can also be "parallel" or "conditional"</span>
+)
+
+<span class="comment"># Process ticket autonomously</span>
+result = orchestrator.run(ticket=user_ticket)
+  </div>
+  
+  <h3>Architecture</h3>
+  <div class="architecture">
+    <div class="box">Ticket Arrives</div>
+    <span class="arrow">→</span>
+    <div class="box">Orchestrator<br>(Plans Workflow)</div>
+    <br>
+    <div class="box">Diagnostic Agent<br>(Analyzes)</div>
+    <span class="arrow">→</span>
+    <div class="box">Knowledge Agent<br>(Retrieves Solution)</div>
+    <span class="arrow">→</span>
+    <div class="box">Resolution Agent<br>(Executes Fix)</div>
+    <br>
+    <div class="box">Verification</div>
+    <span class="arrow">→</span>
+    <div class="box">Auto-Resolved<br>or Escalate</div>
+  </div>
+  
+  <h3>Performance Metrics</h3>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="value">70%</div>
+      <div class="label">Tickets Handled</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">40%</div>
+      <div class="label">Auto-Resolved</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">5-15 sec</div>
+      <div class="label">End-to-End Time</div>
+    </div>
+    <div class="metric-card">
+      <div class="value">$4K-8K/mo</div>
+      <div class="label">Total Costs</div>
+    </div>
+  </div>
+  
+  <h3>Key Capabilities</h3>
+  <div class="grid">
+    <div class="card">
+      <h4>🧠 Planning & Reasoning</h4>
+      <p>Agents break down complex tickets into sub-tasks, determine execution order, and adapt based on results.</p>
+    </div>
+    <div class="card">
+      <h4>🔧 Tool Use</h4>
+      <p>Can call APIs, run scripts, query databases, restart services — not just suggest actions.</p>
+    </div>
+    <div class="card">
+      <h4>🔄 Self-Correction</h4>
+      <p>Verifies fix worked, retries with different approach if failed, escalates if unsure.</p>
+    </div>
+    <div class="card">
+      <h4>🤝 Multi-Agent Collaboration</h4>
+      <p>Specialized agents work together — diagnostic + knowledge + execution — better than one generalist.</p>
+    </div>
+  </div>
+  
+  <div class="pros-cons">
+    <div class="pros-box">
+      <h4>✅ Strengths</h4>
+      <ul>
+        <li>End-to-end automation (40%)</li>
+        <li>Can execute actions, not just suggest</li>
+        <li>Handles complex multi-step workflows</li>
+        <li>Self-corrects and adapts</li>
+        <li>Auditable decision trail</li>
+        <li>Continuous improvement via feedback</li>
+      </ul>
+    </div>
+    <div class="cons-box">
+      <h4>❌ Limitations</h4>
+      <ul>
+        <li>Complex to build and test</li>
+        <li>Higher latency (multi-step)</li>
+        <li>Requires robust safety guardrails</li>
+        <li>Debugging can be challenging</li>
+        <li>Cost increases with tool calls</li>
+        <li>Still emerging (fewer best practices)</li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3>Production Considerations for Banking</h3>
+  <div class="comparison-highlight">
+    <strong>Critical Requirements:</strong><br>
+    <ul style="margin: 10px 0;">
+      <li><strong>Safety Guardrails:</strong> Agents can only execute pre-approved actions with defined parameters</li>
+      <li><strong>Human-in-the-Loop:</strong> Critical operations (data deletion, permission changes) require approval</li>
+      <li><strong>Audit Logging:</strong> Every agent decision and action logged for compliance</li>
+      <li><strong>Rollback Capability:</strong> All changes reversible via automated rollback procedures</li>
+      <li><strong>Cost Monitoring:</strong> Circuit breakers prevent runaway API costs from infinite loops</li>
+    </ul>
+  </div>
+  
+  <h3>When to Use This Approach</h3>
+  <ul style="line-height: 1.8;">
+    <li><strong>You need autonomous execution</strong>, not just recommendations</li>
+    <li>Complex workflows with multiple steps and decision points</li>
+    <li>Have mature AI/ML team and infrastructure</li>
+    <li>High-value use case justifies complexity (ROI &gt; 3x)</li>
+    <li>Can invest in safety, monitoring, and governance</li>
+    <li>Want cutting-edge capabilities, accept more risk</li>
+  </ul>
+</section>
+
+<section>
+  <h2>⚖️ Complete Side-by-Side Comparison</h2>
+  
+  <table>
+    <tr>
+      <th>Criteria</th>
+      <th>Rule-Based</th>
+      <th>Traditional ML</th>
+      <th>GenAI Prompting</th>
+      <th>RAG</th>
+      <th>Fine-Tuning</th>
+      <th>Agentic AI</th>
+    </tr>
+    <tr>
+      <td><strong>Era</strong></td>
+      <td>1980s-2010s</td>
+      <td>2010s</td>
+      <td>2022+</td>
+      <td>2023+</td>
+      <td>2023+</td>
+      <td>2024+</td>
+    </tr>
+    <tr>
+      <td><strong>Ticket Coverage</strong></td>
+      <td>~20%</td>
+      <td>~50%</td>
+      <td>~50%</td>
+      <td>~70%</td>
+      <td>~70%</td>
+      <td>~70% (40% auto-resolved)</td>
+    </tr>
+    <tr>
+      <td><strong>Response Time</strong></td>
+      <td>&lt;100ms</td>
+      <td>~200ms</td>
+      <td>2-5s</td>
+      <td>3-6s</td>
+      <td>1-2s</td>
+      <td>5-15s</td>
+    </tr>
+    <tr>
+      <td><strong>Dev Time</strong></td>
+      <td>2 weeks</td>
+      <td>6 weeks</td>
+      <td>1-2 weeks</td>
+      <td>3-4 weeks</td>
+      <td>6-8 weeks</td>
+      <td>8-12 weeks</td>
+    </tr>
+    <tr>
+      <td><strong>Monthly Cost (500 tickets)</strong></td>
+      <td>$0</td>
+      <td>~$500</td>
+      <td>$2K-5K</td>
+      <td>$3K-6K</td>
+      <td>$1K-2K (+ $5K training)</td>
+      <td>$4K-8K</td>
+    </tr>
+    <tr>
+      <td><strong>ML Expertise</strong></td>
+      <td>None</td>
+      <td>High</td>
+      <td>Low</td>
+      <td>Medium</td>
+      <td>High</td>
+      <td>Very High</td>
+    </tr>
+    <tr>
+      <td><strong>Flexibility</strong></td>
+      <td>Very Low</td>
+      <td>Low</td>
+      <td>Very High</td>
+      <td>Very High</td>
+      <td>Medium</td>
+      <td>Very High</td>
+    </tr>
+    <tr>
+      <td><strong>Hallucination Risk</strong></td>
+      <td>None</td>
+      <td>None</td>
+      <td>High (30%)</td>
+      <td>Low (5%)</td>
+      <td>Low (3%)</td>
+      <td>Medium (10%, in plans)</td>
+    </tr>
+    <tr>
+      <td><strong>Execution Capability</strong></td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td><strong>YES</strong></td>
+    </tr>
+    <tr>
+      <td><strong>Best For</strong></td>
+      <td>Ultra-simple, predictable</td>
+      <td>Stable classification</td>
+      <td>Rapid prototyping</td>
+      <td>Grounded Q&A</td>
+      <td>Consistent style at scale</td>
+      <td>Complex automation</td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>🎓 Decision Framework: How to Choose</h2>
+  
+  <h3>Start Here</h3>
+  <div class="highlight">
+    <strong>Golden Rule:</strong> Always start with the simplest approach that meets your requirements. 
+    Don't use agentic AI when rule-based would work. Complexity is a cost.
+  </div>
+  
+  <h3>Decision Tree</h3>
+  <div class="code-block" style="background: #f5f7fa; color: #333; font-family: monospace;">
+START: What's your primary need?
+
+├─ Ultra-low latency (&lt;100ms) + simple patterns
+│  └─ <strong style="color: #667eea;">→ RULE-BASED SYSTEMS</strong>
+
+├─ Classification with labeled data, no LLM needed
+│  └─ <strong style="color: #667eea;">→ TRADITIONAL ML</strong>
+
+├─ Natural language, rapid prototyping, low volume
+│  └─ <strong style="color: #667eea;">→ GenAI PROMPTING</strong>
+
+├─ Need grounded, factual responses with sources
+│  ├─ Knowledge changes frequently? 
+│  │  └─ <strong style="color: #667eea;">→ RAG</strong>
+│  └─ Need consistent tone/style at high volume?
+│     └─ <strong style="color: #667eea;">→ RAG + FINE-TUNING</strong>
+
+├─ Require autonomous execution of actions
+│  └─ Complex multi-step workflows?
+│     └─ <strong style="color: #667eea;">→ AGENTIC AI</strong>
+
+└─ HYBRID: Different approaches for different ticket types
+   └─ Example: Rules for simple (20%) + RAG for complex (50%) + Agents for execution (30%)
+  </div>
+  
+  <h3>Common Patterns in Production</h3>
+  <div class="grid">
+    <div class="card">
+      <h4>Pattern 1: Progressive Fallback</h4>
+      <p><strong>Try:</strong> Rule-based → ML classifier → RAG → Human<br>
+      <strong>Why:</strong> Fast and cheap first, expensive only when needed</p>
+    </div>
+    <div class="card">
+      <h4>Pattern 2: Hybrid Pipeline</h4>
+      <p><strong>Use:</strong> Rules for 20% + RAG for 50% + Agents for 30%<br>
+      <strong>Why:</strong> Right tool for each ticket complexity</p>
+    </div>
+    <div class="card">
+      <h4>Pattern 3: RAG + Fine-Tuning</h4>
+      <p><strong>Combine:</strong> Fine-tuned for tone, RAG for facts<br>
+      <strong>Why:</strong> Consistency + freshness</p>
+    </div>
+    <div class="card">
+      <h4>Pattern 4: Agent + Human-in-Loop</h4>
+      <p><strong>Use:</strong> Agent proposes, human approves critical actions<br>
+      <strong>Why:</strong> Automation with safety</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>📅 4-Week Learning Plan</h2>
+  
+  <div class="learning-plan">
+    <h3>Structured Path to Mastery</h3>
+    
+    <div class="week-section">
+      <h4>Week 1: Foundations (Rule-Based + Traditional ML)</h4>
+      <p><strong>Goal:</strong> Understand why simple approaches exist and when they work</p>
+      <ul>
+        <li><strong>Day 1-2:</strong> Read Stage 1-2 sections, run rule_based_agent.py</li>
+        <li><strong>Day 3-4:</strong> Build your own classifier (sklearn) on sample tickets</li>
+        <li><strong>Day 5:</strong> Compare rule-based vs ML: precision, recall, coverage</li>
+      </ul>
+      <p><strong>Deliverable:</strong> Working ML classifier + analysis doc</p>
+    </div>
+    
+    <div class="week-section">
+      <h4>Week 2: GenAI Era (Prompting + RAG)</h4>
+      <p><strong>Goal:</strong> Master LLM-based approaches</p>
+      <ul>
+        <li><strong>Day 1-2:</strong> Experiment with Gemini prompting (few-shot learning)</li>
+        <li><strong>Day 3-4:</strong> Build RAG system with ChromaDB + Gemini</li>
+        <li><strong>Day 5:</strong> Read RAG guide (04-rag.html), implement chunking strategies</li>
+      </ul>
+      <p><strong>Deliverable:</strong> Working RAG prototype with your team's runbooks</p>
+    </div>
+    
+    <div class="week-section">
+      <h4>Week 3: Advanced Techniques (Fine-Tuning)</h4>
+      <p><strong>Goal:</strong> Learn when and how to customize models</p>
+      <ul>
+        <li><strong>Day 1-2:</strong> Prepare fine-tuning dataset (100+ examples)</li>
+        <li><strong>Day 3-4:</strong> Fine-tune Gemini on support tickets</li>
+        <li><strong>Day 5:</strong> A/B test: base model vs fine-tuned vs RAG</li>
+      </ul>
+      <p><strong>Deliverable:</strong> Fine-tuned model + comparison metrics</p>
+    </div>
+    
+    <div class="week-section">
+      <h4>Week 4: Cutting Edge (Agentic Workflows)</h4>
+      <p><strong>Goal:</strong> Understand multi-agent systems</p>
+      <ul>
+        <li><strong>Day 1-2:</strong> Read Agentic guide (06-agentic-workflows.html) thoroughly</li>
+        <li><strong>Day 3-4:</strong> Build multi-agent system with ADK</li>
+        <li><strong>Day 5:</strong> Team presentation: decision framework for your use cases</li>
+      </ul>
+      <p><strong>Deliverable:</strong> Working agent + production readiness checklist</p>
+    </div>
+  </div>
+  
+  <div class="highlight">
+    <strong>Post-Training:</strong> Each team member should be able to:<br>
+    ✓ Explain trade-offs between all 6 approaches<br>
+    ✓ Design an AI system for a new use case<br>
+    ✓ Estimate costs, timelines, and technical requirements<br>
+    ✓ Implement at least one working prototype
+  </div>
+</section>
+
+<section>
+  <h2>🔗 Additional Resources</h2>
+  
+  <div class="grid">
+    <div class="card">
+      <h3>Detailed Guides</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="01-rule-based.html">Rule-Based Systems Deep Dive</a></li>
+        <li><a href="02-traditional-ml.html">Traditional ML Guide</a></li>
+        <li><a href="03-genai-prompting.html">GenAI Prompting Guide</a></li>
+        <li><a href="04-rag.html">RAG Implementation Guide</a></li>
+        <li><a href="05-fine-tuning.html">Fine-Tuning Guide</a></li>
+        <li><a href="06-agentic-workflows.html">Agentic Workflows Guide</a> ⭐</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>Working Code Examples</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="code-examples/01-rule-based/">Rule-Based Agent</a> (Python)</li>
+        <li><a href="code-examples/02-traditional-ml/">ML Classifier</a> (sklearn)</li>
+        <li><a href="code-examples/03-prompting/">Prompting Examples</a> (Gemini)</li>
+        <li><a href="code-examples/04-rag/">RAG System</a> (ChromaDB)</li>
+        <li><a href="code-examples/06-agentic/">Multi-Agent System</a> (ADK)</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>Quick References</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="00-QUICK-START.html">Quick Start Guide</a></li>
+        <li><a href="README.txt">Overview & Setup</a></li>
+        <li><a href="decision-tree.pdf">Decision Tree (Printable)</a></li>
+        <li><a href="metrics-calculator.xlsx">ROI Calculator</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>External Links</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="https://ai.google.dev/adk">Google ADK Documentation</a></li>
+        <li><a href="https://ai.google.dev/gemini-api">Gemini API Docs</a></li>
+        <li><a href="https://python.langchain.com/">LangChain</a></li>
+        <li><a href="https://www.trychroma.com/">ChromaDB</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="nav-links">
+  <p style="margin-bottom: 15px; font-size: 18px;">Ready to dive deeper?</p>
+  <a href="00-QUICK-START.html">Quick Start Guide</a>
+  <a href="06-agentic-workflows.html">Agentic Workflows (Priority)</a>
+  <a href="code-examples/01-rule-based/rule_based_agent.py">Run Code Examples</a>
+</div>
+
+<footer style="text-align: center; padding: 40px; background: #f5f7fa; color: #666; font-size: 14px;">
+  <p>© 2025 — AI Evolution Learning Guide for Data Engineering Teams</p>
+  <p style="margin-top: 10px;">Created for Banking AI & Data Platform • Internal Training Use</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG vs Fine-Tuning vs Few-Shot Prompting – Complete Guide</title>
+<style>
+  body {font-family: "Segoe UI", Arial, sans-serif; background:#f9fafc; color:#222; margin:0;}
+  section {padding:40px 60px; border-bottom:1px solid #e0e0e0;}
+  h1,h2,h3 {margin-top:0;color:#003366;}
+  h1 {font-size:32px; text-align:center; margin:40px 0;}
+  h2 {font-size:24px; margin-top:30px;}
+  h3 {font-size:20px; margin-top:20px;}
+  table {border-collapse: collapse; width:100%; margin:20px 0;}
+  th, td {border:1px solid #ddd; padding:10px; text-align:left;}
+  th {background:#003366; color:#fff;}
+  tr:nth-child(even){background:#f2f6fa;}
+  .highlight {background:#eaf4ff; padding:15px; border-left:5px solid #004a99;}
+  .grid {display:flex; flex-wrap:wrap; gap:20px;}
+  .card {flex:1 1 300px; border:1px solid #ccc; border-radius:8px; background:white; padding:20px;}
+  .card h3 {margin-top:0;}
+  .pros {color:#006400;}
+  .cons {color:#8b0000;}
+  ul {line-height:1.6;}
+  .example-list {margin-bottom: 0;}
+  .decision-flow {background:#f5f5f5; padding:15px; border-radius:8px; font-size:15px; margin:0;}
+</style>
+</head>
+<body>
+
+<h1>RAG vs Fine-Tuning vs Few-Shot Prompting</h1>
+
+<section>
+  <h2>Overview</h2>
+  <p>This guide visualizes three major techniques for customizing large language models (LLMs) to your data: Few-Shot Prompting, Retrieval-Augmented Generation (RAG), and Fine-Tuning.</p>
+  <div class="highlight">
+    <strong>Goal:</strong> Understand when and how to use each method efficiently, considering cost, accuracy, freshness, and infrastructure complexity.
+  </div>
+</section>
+
+<section>
+  <h2>Few-Shot Prompting (In-Context Learning)</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>What It Does</h3>
+      <ul>
+        <li>Teaches the model using examples included directly in the prompt.</li>
+        <li>No model retraining — instant learning during inference.</li>
+        <li>Works with any modern LLM.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>When to Use</h3>
+      <ul>
+        <li>Quick prototyping or POC testing.</li>
+        <li>Small, stable tasks (classification, formatting).</li>
+        <li>When you have 10–50 curated examples.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Limitations</h3>
+      <ul>
+        <li class="cons">High token cost for large-scale use.</li>
+        <li class="cons">Struggles with complex reasoning.</li>
+        <li class="cons">Limited consistency and context window bound.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Real-World Use Cases</h3>
+  <ul class="example-list">
+    <li>Customer support chatbots handling new, changing queries with example-based prompts.</li>
+    <li>Information extraction (e.g., pulling structured fields from job postings, invoices, emails).</li>
+    <li>Sentiment and text classification by providing annotated examples.<br>Example: "Great service!" → Positive.</li>
+    <li>Content generation for product descriptions, technical docs, and social posts with style-shaping examples.</li>
+    <li>Data transformation tasks—convert formats, summarize content or restructure tables in the prompt.</li>
+  </ul>
+
+  <p><strong>Example:</strong> Sentiment classification using few-shot examples inline with the query prompt.</p>
+</section>
+
+<section>
+  <h2>Retrieval-Augmented Generation (RAG)</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>How It Works</h3>
+      <ul>
+        <li>Retrieves information from a knowledge base via embeddings.</li>
+        <li>Injects relevant docs into the model’s prompt during response generation.</li>
+        <li>Keeps models up-to-date without retraining.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>When to Use</h3>
+      <ul>
+        <li>Dynamic data (news, FAQs, policies).</li>
+        <li>Need explainable responses with sources.</li>
+        <li>Large, multi-domain knowledge bases.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Limitations</h3>
+      <ul>
+        <li class="cons">Adds 100–300ms latency (search + embedding).</li>
+        <li class="cons">Quality depends on chunking and retrieval algorithms.</li>
+        <li class="cons">Doesn’t teach new skills or tone.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Real-World Use Cases</h3>
+  <ul class="example-list">
+    <li>Search applications and Q&A bots powered by up-to-date product catalogs or help docs.</li>
+    <li>Healthcare assistants retrieving latest research papers, integrating with medical knowledge bases.</li>
+    <li>Legal and compliance analysis by grounding output in retrieved document clauses.</li>
+    <li>Retail and e-commerce assistants answering customer queries, always reflecting current inventory.</li>
+    <li>Industrial and manufacturing troubleshooting using document retrieval for manuals and safety procedures.</li>
+  </ul>
+
+  <div class="highlight">
+    <strong>Architecture:</strong><br>
+    User Query → Embed → Vector Search → Select Top-k Docs → Inject into Prompt → LLM Generates Response
+  </div>
+</section>
+
+<section>
+  <h2>Fine-Tuning</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>What It Does</h3>
+      <ul>
+        <li>Retrains an LLM (partially or fully) on custom data.</li>
+        <li>Teaches new skills, formats, tone, or reasoning patterns.</li>
+        <li>Creates a custom model checkpoint for reuse.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>When to Use</h3>
+      <ul>
+        <li>Need domain expertise (medical, legal, finance).</li>
+        <li>Require consistent structured outputs (JSON/XML).</li>
+        <li>Serve millions of requests with cost efficiency.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Limitations</h3>
+      <ul>
+        <li class="cons">Training requires 1,000+ examples and ML expertise.</li>
+        <li class="cons">Slow to update when data changes.</li>
+        <li class="cons">Higher initial cost ($100–10,000+).</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Real-World Use Cases</h3>
+  <ul class="example-list">
+    <li>Enterprise customer service bots trained for consistent brand voice and expert product knowledge.</li>
+    <li>Medical diagnosis assistants learning clinical reasoning and workflows from annotated patient data.</li>
+    <li>Legal assistants that identify contract clauses, generate summaries, or review compliance reliably.</li>
+    <li>Content creation models generating brand-matched marketing copy, social posts, and tech docs.</li>
+    <li>Job matching and recruiting tools trained to semantic similarity between applicants and roles.</li>
+    <li>Specialized code gen assistants that know framework best practices, generate or translate code.</li>
+  </ul>
+
+  <p><strong>Techniques:</strong> LoRA adapters, full fine-tuning, and domain-specific adaptation.</p>
+</section>
+
+<section>
+  <h2>Side-by-Side Comparison</h2>
+  <table>
+    <tr><th>Criteria</th><th>Few-Shot Prompting</th><th>RAG</th><th>Fine-Tuning</th></tr>
+    <tr><td>Complexity of Task</td><td>Simple, small scope</td><td>Factual lookup, dynamic data</td><td>Complex reasoning, domain expertise</td></tr>
+    <tr><td>Volume (Requests/Month)</td><td>Low–medium</td><td>Medium–high</td><td>High</td></tr>
+    <tr><td>Consistency Required</td><td>Low–Moderate</td><td>Moderate</td><td>High</td></tr>
+    <tr><td>Data Freshness</td><td>Immediate</td><td>Real-time updates</td><td>Static (until retrain)</td></tr>
+    <tr><td>ML Expertise Needed</td><td>None</td><td>Low–Medium</td><td>High</td></tr>
+    <tr><td>Best For</td><td>Prototyping, feature tweaks</td><td>Q&A, dynamic info</td><td>Domain adaptation, structure, style</td></tr>
+    <tr><td>Cost for 1M Queries</td><td>High</td><td>Medium</td><td>Low (if volume)</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Decision Guide: How to Pick</h2>
+  <h3>Evaluation Workflow</h3>
+  <ul>
+    <li>If you need rapid results and only a few examples: <strong>Few-Shot Prompting</strong>.</li>
+    <li>If your use case depends on frequently changing, external data (product catalogs, documents, latest news): <strong>RAG</strong>.</li>
+    <li>If results must match a specific behavior, skill, or format with high consistency, and you have many examples: <strong>Fine-Tuning</strong>.</li>
+    <li>For hybrid needs—e.g., both company-specific communication style and real-time factual accuracy—combine RAG with Fine-Tuning.</li>
+    <li>Always start by testing with Few-Shot, then scale to RAG or Fine-Tuning as requirements solidify.</li>
+  </ul>
+
+  <h3>Decision Flowchart</h3>
+  <pre class="decision-flow">
+START
+├─ Teaching FACTS?
+│  ├─ Changes frequently → RAG
+│  └─ Static → Few-Shot (small base) / RAG (large base)
+├─ Teaching BEHAVIORS or SKILLS?
+│  ├─ Simple → Few-Shot
+│  └─ Complex / Structured → Fine-Tuning
+└─ Hybrid requirements → RAG + Fine-Tuning
+  </pre>
+
+  <p><strong>Practical Roadmap:</strong></p>
+  <ul>
+    <li><strong>Phase 1 – Validation:</strong> Use Few-Shot for fast prototyping and concept validation.</li>
+    <li><strong>Phase 2 – Scale:</strong> Add RAG if knowledge changes rapidly; use Fine-Tuning for consistent structured outputs or behavior.</li>
+    <li><strong>Phase 3 – Optimize:</strong> For large volume, combine approaches for best ROI and quality.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Combining Approaches</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>RAG + Fine-Tuning</h3>
+      <p>Best for enterprise assistants needing both fresh knowledge and unique communication style.</p>
+    </div>
+    <div class="card">
+      <h3>Few-Shot + RAG</h3>
+      <p>Great for prototyping with up-to-date data, shaping both output and factual accuracy.</p>
+    </div>
+    <div class="card">
+      <h3>Multi-Stage Pipeline</h3>
+      <p>Few-Shot → RAG → Fine-Tuned output → Format refinement for complex workflows.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 – RAG vs Fine-Tuning vs Few-Shot Prompting | Visualization Guide
+</footer>
+
+</body>
+</html>

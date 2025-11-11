@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCP (Model Context Protocol) — Foundation for Agentic AI</title>
+<style>
+  body {font-family: "Segoe UI", Arial, sans-serif; background:#f9fafc; color:#222; margin:0;}
+  section {padding:40px 60px; border-bottom:1px solid #e0e0e0;}
+  h1,h2,h3,h4 {margin-top:0;color:#003366;}
+  h1 {font-size:38px; text-align:center; margin:40px 0 20px 0;}
+  h2 {font-size:28px; margin-top:30px; border-bottom:3px solid #667eea; padding-bottom:10px;}
+  h3 {font-size:22px; margin-top:20px; color:#004a99;}
+  h4 {font-size:18px; margin-top:15px; color:#333;}
+  
+  .hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 60px;
+    text-align: center;
+    border-bottom: none;
+  }
+  .hero h1 {color: white; font-size: 42px; margin-bottom: 15px;}
+  .hero .subtitle {font-size: 20px; opacity: 0.95; margin-bottom: 20px;}
+  
+  .tl-dr {
+    background: #eaf4ff;
+    border-left: 5px solid #004a99;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+  .tl-dr strong {font-size: 18px; color: #003366;}
+  
+  .highlight {background:#eaf4ff; padding:20px; border-left:5px solid #004a99; border-radius: 8px; margin: 20px 0;}
+  .warning {background:#fff4e6; border-left:5px solid:#f59e0b; padding:20px; border-radius:8px; margin:20px 0;}
+  .success {background:#e6f7f1; border-left:5px solid:#006400; padding:20px; border-radius:8px; margin:20px 0;}
+  
+  .grid {display:flex; flex-wrap:wrap; gap:20px; margin: 20px 0;}
+  .card {
+    flex:1 1 300px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:white;
+    padding:25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .card h3 {margin-top:0; color:#003366;}
+  .card h4 {margin-top:15px; color:#004a99;}
+  
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  .without {background: #fff5f5; border-left: 5px solid #f56565; padding: 20px; border-radius: 8px;}
+  .with {background: #f0fff4; border-left: 5px solid #48bb78; padding: 20px; border-radius: 8px;}
+  .without h4 {color: #c53030;}
+  .with h4 {color: #2f855a;}
+  
+  .architecture {
+    background: #f5f7fa;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .architecture .box {
+    background: white;
+    border: 2px solid #667eea;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 10px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .architecture .mcp-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+  }
+  .architecture .arrow {
+    display: inline-block;
+    color: #667eea;
+    font-size: 24px;
+    margin: 0 10px;
+  }
+  
+  .code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .code-block .comment {color: #6a9955;}
+  .code-block .keyword {color: #569cd6;}
+  .code-block .string {color: #ce9178;}
+  .code-block .function {color: #dcdcaa;}
+  
+  table {border-collapse: collapse; width:100%; margin:20px 0;}
+  th, td {border:1px solid #ddd; padding:12px; text-align:left; vertical-align: top;}
+  th {background:#003366; color:#fff; font-weight: 600;}
+  tr:nth-child(even){background:#f2f6fa;}
+  
+  .decision-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  .use-mcp {background: #e6f7f1; border: 2px solid #10b981; border-radius: 10px; padding: 25px;}
+  .skip-mcp {background: #ffe6e6; border: 2px solid #ef4444; border-radius: 10px; padding: 25px;}
+  .use-mcp h3 {color: #047857; margin-top: 0;}
+  .skip-mcp h3 {color: #dc2626; margin-top: 0;}
+  
+  @media (max-width: 768px) {
+    section {padding: 30px 20px;}
+    .grid, .comparison, .decision-box {grid-template-columns: 1fr;}
+    h1 {font-size: 32px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔌 Model Context Protocol (MCP)</h1>
+  <div class="subtitle">The Universal Standard for Connecting AI Models to Data Sources</div>
+  <p style="max-width: 800px; margin: 20px auto; font-size: 16px; line-height: 1.6;">
+    Think "USB for AI" — one standardized protocol to connect any AI model to any data source or tool. 
+    Created by Anthropic in November 2024 to solve the integration chaos in agentic systems.
+  </p>
+</div>
+
+<section>
+  <h2>🎯 What is MCP?</h2>
+  
+  <div class="tl-dr">
+    <strong>TL;DR</strong><br>
+    MCP is an open protocol that standardizes how AI models (Claude, Gemini, GPT-4) connect to data sources 
+    (databases, APIs, files, tools). Instead of building custom integrations for each model-tool combination, 
+    you build once and it works with all models. Like USB replacing serial ports, parallel ports, etc.
+  </div>
+  
+  <h3>The Problem MCP Solves</h3>
+  
+  <div class="comparison">
+    <div class="without">
+      <h4>❌ Without MCP (Current State)</h4>
+      <ul style="font-size: 14px; line-height: 1.8;">
+        <li>Every AI model needs custom integration code</li>
+        <li>3 models × 10 tools = 30 integration points</li>
+        <li>Each agent team builds same connectors</li>
+        <li>No standardization across organization</li>
+        <li>Switching models = rewrite everything</li>
+        <li>Security policies inconsistent</li>
+      </ul>
+      <div style="margin-top: 15px; padding: 15px; background: rgba(220,38,38,0.1); border-radius: 5px; font-size: 13px;">
+        <strong>Example:</strong> Building 3 agents (support, analytics, compliance) that all need database access?<br>
+        → Write 3 separate database integrations<br>
+        → 3× the work, 3× the security reviews, 3× the maintenance
+      </div>
+    </div>
+    
+    <div class="with">
+      <h4>✅ With MCP (Future State)</h4>
+      <ul style="font-size: 14px; line-height: 1.8;">
+        <li>One standard protocol for all integrations</li>
+        <li>Write database connector once, use everywhere</li>
+        <li>Platform team maintains MCP servers</li>
+        <li>All agents benefit from improvements</li>
+        <li>Switch models without code changes</li>
+        <li>Centralized security & governance</li>
+      </ul>
+      <div style="margin-top: 15px; padding: 15px; background: rgba(5,150,105,0.1); border-radius: 5px; font-size: 13px;">
+        <strong>Example:</strong> Building 3 agents?<br>
+        → Use existing MCP database server<br>
+        → 1× the work, 1× security review, shared maintenance<br>
+        → New agent? Just connect to MCP server
+      </div>
+    </div>
+  </div>
+  
+  <h3>The USB Analogy</h3>
+  
+  <div class="highlight">
+    <strong>Before USB (1990s):</strong><br>
+    • Mouse: PS/2 port<br>
+    • Keyboard: Different PS/2 port<br>
+    • Printer: Parallel port<br>
+    • Modem: Serial port<br>
+    • Scanner: SCSI port<br>
+    <strong>Problem:</strong> Every device = different cable, different driver<br><br>
+    
+    <strong>After USB (2000s+):</strong><br>
+    • Everything: One USB port<br>
+    • Plug and play, universal compatibility<br><br>
+    
+    <strong>Similarly, MCP:</strong><br>
+    • Before: Every AI model needs custom connectors<br>
+    • After: One MCP protocol, works with all models<br>
+    • Build once, use everywhere
+  </div>
+</section>
+
+<section>
+  <h2>🏗️ MCP Architecture</h2>
+  
+  <h3>Core Components</h3>
+  
+  <div class="architecture">
+    <div style="margin-bottom: 30px;">
+      <div class="box">AI Model<br>(Claude/Gemini/GPT-4)</div>
+      <span class="arrow">↔</span>
+      <div class="mcp-box">MCP Client<br>(Your Agent)</div>
+    </div>
+    
+    <div style="margin: 30px 0;">
+      <span class="arrow">↓</span><br>
+      <strong style="font-size: 16px; color: #667eea;">MCP Protocol (Standardized)</strong><br>
+      <span class="arrow">↓</span>
+    </div>
+    
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+      <div class="mcp-box">MCP Server<br>PostgreSQL</div>
+      <div class="mcp-box">MCP Server<br>Google Drive</div>
+      <div class="mcp-box">MCP Server<br>Slack</div>
+      <div class="mcp-box">MCP Server<br>GitHub</div>
+    </div>
+    
+    <div style="margin-top: 30px;">
+      <span class="arrow">↓</span><br>
+      <div class="box">Your Data Sources</div>
+    </div>
+  </div>
+  
+  <h3>Key Concepts</h3>
+  
+  <div class="grid">
+    <div class="card">
+      <h4>MCP Client</h4>
+      <p style="font-size: 14px;">Lives in your agent/application. Speaks MCP protocol to connect to servers. 
+      Makes requests like "read file", "query database", "search emails".</p>
+      <p style="font-size: 13px; margin-top: 10px; color: #666;"><strong>Examples:</strong> Claude Desktop, Claude Code, your custom agent</p>
+    </div>
+    
+    <div class="card">
+      <h4>MCP Server</h4>
+      <p style="font-size: 14px;">Wraps a data source (database, API, filesystem) and exposes it via MCP protocol. 
+      Handles authentication, queries, and returns data in standard format.</p>
+      <p style="font-size: 13px; margin-top: 10px; color: #666;"><strong>Examples:</strong> PostgreSQL server, GitHub server, Slack server</p>
+    </div>
+    
+    <div class="card">
+      <h4>MCP Protocol</h4>
+      <p style="font-size: 14px;">The standard that both client and server speak. Defines how to: 
+      discover available tools, invoke functions, handle errors, stream responses.</p>
+      <p style="font-size: 13px; margin-top: 10px; color: #666;"><strong>Built on:</strong> JSON-RPC, similar to LSP (Language Server Protocol)</p>
+    </div>
+  </div>
+  
+  <h3>How It Works (Sequence)</h3>
+  
+  <div class="code-block" style="background: #f8f9fa; color: #333; font-family: monospace; padding: 15px;">
+<span style="color: #667eea; font-weight: bold;">1. Agent needs database access</span>
+   ├─ Agent: "I need to query customer_transactions"
+   │
+<span style="color: #667eea; font-weight: bold;">2. MCP Client discovers available servers</span>
+   ├─ Client connects to PostgreSQL MCP Server
+   ├─ Server: "I provide: query(), get_schema(), execute()"
+   │
+<span style="color: #667eea; font-weight: bold;">3. Agent invokes function via MCP</span>
+   ├─ Agent → Client: query("SELECT * FROM transactions WHERE ...")
+   ├─ Client → Server: MCP request with query
+   │
+<span style="color: #667eea; font-weight: bold;">4. MCP Server executes and returns</span>
+   ├─ Server: Runs query on actual PostgreSQL
+   ├─ Server → Client: MCP response with results
+   │
+<span style="color: #667eea; font-weight: bold;">5. Agent receives data</span>
+   └─ Client → Agent: "Here are 150 rows..."
+  </div>
+</section>
+
+<section>
+  <h2>💻 Basic MCP Implementation</h2>
+  
+  <h3>Installing MCP SDK</h3>
+  
+  <div class="code-block">
+<span class="comment"># Install MCP SDK (Python)</span>
+pip install mcp --break-system-packages
+
+<span class="comment"># Or for Node.js</span>
+npm install @modelcontextprotocol/sdk
+  </div>
+  
+  <h3>Creating an MCP Server (Python)</h3>
+  
+  <div class="code-block">
+<span class="keyword">from</span> mcp.server <span class="keyword">import</span> Server, Tool
+<span class="keyword">from</span> mcp.server.stdio <span class="keyword">import</span> stdio_server
+<span class="keyword">import</span> psycopg2
+
+<span class="comment"># Create MCP server for PostgreSQL</span>
+server = Server(<span class="string">"postgresql-mcp-server"</span>)
+
+<span class="comment"># Define tool that MCP clients can use</span>
+@server.tool()
+<span class="keyword">async def</span> <span class="function">query_database</span>(
+    query: <span class="keyword">str</span>,
+    params: list = <span class="keyword">None</span>
+) -> dict:
+    <span class="string">"""
+    Execute SQL query on PostgreSQL database.
+    
+    Args:
+        query: SQL SELECT statement
+        params: Optional query parameters
+        
+    Returns:
+        Query results as list of dicts
+    """</span>
+    
+    <span class="comment"># Connect to database (use env vars for credentials)</span>
+    conn = psycopg2.connect(
+        host=<span class="string">"localhost"</span>,
+        database=<span class="string">"banking_platform"</span>,
+        user=os.getenv(<span class="string">"DB_USER"</span>),
+        password=os.getenv(<span class="string">"DB_PASSWORD"</span>)
+    )
+    
+    <span class="keyword">try</span>:
+        <span class="keyword">with</span> conn.cursor() <span class="keyword">as</span> cur:
+            cur.execute(query, params)
+            columns = [desc[<span class="string">0</span>] <span class="keyword">for</span> desc <span class="keyword">in</span> cur.description]
+            rows = cur.fetchall()
+            
+            <span class="comment"># Format as list of dicts</span>
+            results = [
+                dict(zip(columns, row))
+                <span class="keyword">for</span> row <span class="keyword">in</span> rows
+            ]
+            
+            <span class="keyword">return</span> {
+                <span class="string">"success"</span>: <span class="keyword">True</span>,
+                <span class="string">"rows"</span>: results,
+                <span class="string">"row_count"</span>: len(results)
+            }
+    
+    <span class="keyword">finally</span>:
+        conn.close()
+
+
+@server.tool()
+<span class="keyword">async def</span> <span class="function">get_schema</span>(table_name: <span class="keyword">str</span>) -> dict:
+    <span class="string">"""Get schema information for a table."""</span>
+    <span class="comment"># Implementation...</span>
+    <span class="keyword">pass</span>
+
+
+<span class="comment"># Run server using stdio transport</span>
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+    stdio_server(server)
+  </div>
+  
+  <h3>Using MCP Server in Your Agent</h3>
+  
+  <div class="code-block">
+<span class="keyword">from</span> mcp.client <span class="keyword">import</span> ClientSession, StdioServerParameters
+<span class="keyword">from</span> mcp <span class="keyword">import</span> types
+
+<span class="comment"># Connect to MCP server</span>
+server_params = StdioServerParameters(
+    command=<span class="string">"python"</span>,
+    args=[<span class="string">"postgresql_mcp_server.py"</span>]
+)
+
+<span class="keyword">async with</span> ClientSession(server_params) <span class="keyword">as</span> session:
+    <span class="comment"># Initialize connection</span>
+    <span class="keyword">await</span> session.initialize()
+    
+    <span class="comment"># List available tools</span>
+    tools = <span class="keyword">await</span> session.list_tools()
+    <span class="keyword">print</span>(<span class="string">f"Available tools: {[t.name for t in tools]}"</span>)
+    
+    <span class="comment"># Call tool via MCP</span>
+    result = <span class="keyword">await</span> session.call_tool(
+        <span class="string">"query_database"</span>,
+        arguments={
+            <span class="string">"query"</span>: <span class="string">"SELECT * FROM support_tickets WHERE status = 'open' LIMIT 10"</span>
+        }
+    )
+    
+    <span class="keyword">print</span>(<span class="string">f"Found {result['row_count']} open tickets"</span>)
+    <span class="keyword">for</span> ticket <span class="keyword">in</span> result[<span class="string">'rows'</span>]:
+        <span class="keyword">print</span>(<span class="string">f"  - {ticket['id']}: {ticket['description']}"</span>)
+  </div>
+</section>
+
+<section>
+  <h2>📦 Available MCP Servers</h2>
+  
+  <h3>Official Servers (by Anthropic)</h3>
+  
+  <div class="grid">
+    <div class="card">
+      <h4>📁 Filesystem</h4>
+      <p style="font-size: 14px;">Read/write local files and directories</p>
+      <div class="code-block" style="font-size: 11px; padding: 8px; margin-top: 10px;">
+npm install @modelcontextprotocol/server-filesystem
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>🐙 GitHub</h4>
+      <p style="font-size: 14px;">Access repos, issues, PRs, actions</p>
+      <div class="code-block" style="font-size: 11px; padding: 8px; margin-top: 10px;">
+npm install @modelcontextprotocol/server-github
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>📄 Google Drive</h4>
+      <p style="font-size: 14px;">Read/write docs, sheets, slides</p>
+      <div class="code-block" style="font-size: 11px; padding: 8px; margin-top: 10px;">
+npm install @modelcontextprotocol/server-gdrive
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>💬 Slack</h4>
+      <p style="font-size: 14px;">Send messages, read channels</p>
+      <div class="code-block" style="font-size: 11px; padding: 8px; margin-top: 10px;">
+npm install @modelcontextprotocol/server-slack
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>🗄️ PostgreSQL</h4>
+      <p style="font-size: 14px;">Query and manage databases</p>
+      <div class="code-block" style="font-size: 11px; padding: 8px; margin-top: 10px;">
+npm install @modelcontextprotocol/server-postgres
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>🔍 Brave Search</h4>
+      <p style="font-size: 14px;">Web search capabilities</p>
+      <div class="code-block" style="font-size: 11px; padding: 8px; margin-top: 10px;">
+npm install @modelcontextprotocol/server-brave-search
+      </div>
+    </div>
+  </div>
+  
+  <h3>Community Servers (Examples)</h3>
+  
+  <ul style="line-height: 2;">
+    <li><strong>📝 Notion:</strong> Read/write Notion pages and databases</li>
+    <li><strong>🎯 Linear:</strong> Manage issues and projects</li>
+    <li><strong>📊 Jira:</strong> Ticket management and workflows</li>
+    <li><strong>☁️ AWS:</strong> Interact with AWS services (S3, Lambda, etc.)</li>
+    <li><strong>🧠 Vector DBs:</strong> Pinecone, Weaviate, Chroma connectors</li>
+    <li><strong>🏢 Enterprise:</strong> Salesforce, SAP, Oracle custom connectors</li>
+  </ul>
+  
+  <div class="success">
+    <strong>For Banking:</strong> You'd build custom MCP servers for:
+    <ul style="margin-top: 10px;">
+      <li>Internal databases (customer data, transactions)</li>
+      <li>Legacy mainframe systems</li>
+      <li>Compliance/audit logging systems</li>
+      <li>Document management systems</li>
+      <li>Access control systems (IAM)</li>
+    </ul>
+    <strong>Benefit:</strong> Once built, any agent can use them. No rebuilding integrations!
+  </div>
+</section>
+
+<section>
+  <h2>⚖️ When to Use MCP?</h2>
+  
+  <div class="decision-box">
+    <div class="use-mcp">
+      <h3>✅ USE MCP When:</h3>
+      <ul style="font-size: 14px; line-height: 2;">
+        <li>Building platform for multiple agents</li>
+        <li>Need governance, security, compliance</li>
+        <li>Working with legacy/hybrid systems</li>
+        <li>Want to swap LLMs without rewrites</li>
+        <li>Reusability matters (3+ agents)</li>
+        <li>Enterprise production systems</li>
+        <li>Multi-team organization</li>
+        <li>Long-term maintainability critical</li>
+      </ul>
+    </div>
+    
+    <div class="skip-mcp">
+      <h3>❌ SKIP MCP (for now) When:</h3>
+      <ul style="font-size: 14px; line-height: 2;">
+        <li>Single agent, single integration</li>
+        <li>Prototype/POC (speed to market)</li>
+        <li>Ultra-low latency required (&lt;100ms)</li>
+        <li>Simple CRUD with modern REST APIs</li>
+        <li>Won't change/evolve significantly</li>
+        <li>No reusability needs</li>
+        <li>Solo developer/small team</li>
+        <li>Short-lived project</li>
+      </ul>
+    </div>
+  </div>
+  
+  <h3>ROI Calculation</h3>
+  
+  <div class="highlight">
+    <strong>Break-Even Analysis:</strong><br><br>
+    
+    <strong>Scenario:</strong> Building 5 agents, each needs database + Slack + Drive access<br><br>
+    
+    <strong>Without MCP:</strong><br>
+    • 5 agents × 3 integrations = 15 custom connectors<br>
+    • 2 days per connector = 30 days of work<br>
+    • Maintenance: 15 connectors to update when APIs change<br><br>
+    
+    <strong>With MCP:</strong><br>
+    • Build 3 MCP servers once = 6 days (2 days each)<br>
+    • All 5 agents use same servers = 0 additional work<br>
+    • Maintenance: 3 servers to update (not 15 connectors)<br><br>
+    
+    <strong>Result:</strong> MCP saves 24 days of development (80% reduction) and 80% less maintenance.<br><br>
+    
+    <strong>Threshold:</strong> MCP pays for itself after ~3-5 agents using same data sources.
+  </div>
+</section>
+
+<section>
+  <h2>🔒 Security & Governance</h2>
+  
+  <h3>Key Benefits for Banking</h3>
+  
+  <div class="grid">
+    <div class="card">
+      <h4>🛡️ Centralized Access Control</h4>
+      <p style="font-size: 14px;">MCP servers enforce access policies in one place. Don't repeat auth logic in every agent.</p>
+    </div>
+    
+    <div class="card">
+      <h4>📝 Audit Trail</h4>
+      <p style="font-size: 14px;">MCP servers log all data access. Single audit trail instead of scattered logs.</p>
+    </div>
+    
+    <div class="card">
+      <h4>🔐 Secret Management</h4>
+      <p style="font-size: 14px;">Credentials stored in MCP server only. Agents never see database passwords.</p>
+    </div>
+    
+    <div class="card">
+      <h4>🚦 Rate Limiting</h4>
+      <p style="font-size: 14px;">MCP server enforces rate limits. Protect databases from agent runaway queries.</p>
+    </div>
+  </div>
+  
+  <h3>Implementation Example</h3>
+  
+  <div class="code-block">
+<span class="comment"># MCP server with security enforcement</span>
+@server.tool()
+<span class="keyword">async def</span> <span class="function">query_database</span>(query: <span class="keyword">str</span>, agent_id: <span class="keyword">str</span>) -> dict:
+    <span class="comment"># 1. Verify agent has permission</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> check_permission(agent_id, <span class="string">"database_read"</span>):
+        <span class="keyword">raise</span> PermissionError(<span class="string">f"Agent {agent_id} not authorized"</span>)
+    
+    <span class="comment"># 2. Validate query (no DELETE, UPDATE, DROP)</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> is_safe_query(query):
+        <span class="keyword">raise</span> ValueError(<span class="string">"Only SELECT queries allowed"</span>)
+    
+    <span class="comment"># 3. Check rate limit</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> rate_limiter.allow(agent_id):
+        <span class="keyword">raise</span> RateLimitError(<span class="string">"Query limit exceeded"</span>)
+    
+    <span class="comment"># 4. Log audit trail</span>
+    audit_log.record({
+        <span class="string">"agent_id"</span>: agent_id,
+        <span class="string">"action"</span>: <span class="string">"database_query"</span>,
+        <span class="string">"query"</span>: query,
+        <span class="string">"timestamp"</span>: datetime.now()
+    })
+    
+    <span class="comment"># 5. Execute query</span>
+    <span class="keyword">return</span> execute_query(query)
+  </div>
+</section>
+
+<section>
+  <h2>📊 Latency Considerations</h2>
+  
+  <div class="warning">
+    <strong>Yes, MCP adds a layer.</strong> Here's when it matters and when it doesn't:
+  </div>
+  
+  <div class="comparison">
+    <div style="background: #f0fff4; border-left: 5px solid #48bb78; padding: 20px; border-radius: 8px;">
+      <h4 style="color: #2f855a;">✓ Latency Impact: LOW</h4>
+      <ul style="font-size: 14px; line-height: 1.8;">
+        <li><strong>Human-in-the-loop workflows:</strong> Support tickets, document review</li>
+        <li><strong>Batch processing:</strong> Overnight jobs, data reconciliation</li>
+        <li><strong>Slow backends dominate:</strong> Database queries (2-5s), MCP overhead ~50ms (1-2%)</li>
+        <li><strong>Complex data retrieval:</strong> API calls, file processing</li>
+      </ul>
+    </div>
+    
+    <div style="background: #fff5f5; border-left: 5px solid #f56565; padding: 20px; border-radius: 8px;">
+      <h4 style="color: #c53030;">✗ Latency Impact: HIGH</h4>
+      <ul style="font-size: 14px; line-height: 1.8;">
+        <li><strong>Real-time chat:</strong> Conversational UI with streaming</li>
+        <li><strong>High-frequency operations:</strong> Trading decisions, real-time alerts</li>
+        <li><strong>Interactive co-pilots:</strong> Code completion, live suggestions</li>
+        <li><strong>Ultra-low latency needs:</strong> Requirements under 100ms</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="highlight">
+    <strong>💡 Hybrid Approach:</strong><br>
+    • Use direct API calls for latency-critical paths<br>
+    • Use MCP for complex, governed, reusable integrations<br>
+    • Best of both worlds: optimize where it matters
+  </div>
+</section>
+
+<section>
+  <h2>🔗 MCP + Agentic AI</h2>
+  
+  <div class="success">
+    <strong>MCP is the Foundation for Agentic AI Systems</strong><br><br>
+    
+    Multi-agent systems (Stage 6) need to access many data sources and tools. Without MCP:
+    <ul style="margin-top: 10px;">
+      <li>Each agent builds its own integrations (duplication)</li>
+      <li>Security policies inconsistent across agents</li>
+      <li>Hard to maintain as system evolves</li>
+    </ul>
+    
+    With MCP:
+    <ul style="margin-top: 10px;">
+      <li>Platform team maintains MCP servers</li>
+      <li>All agents benefit from improvements</li>
+      <li>Centralized governance and security</li>
+      <li>Easy to add new agents or swap models</li>
+    </ul>
+  </div>
+  
+  <h3>Example: L1 Support with MCP</h3>
+  
+  <div class="architecture">
+    <div style="text-align: left; max-width: 600px; margin: 0 auto;">
+      <strong style="color: #667eea; font-size: 16px;">Agent Architecture:</strong><br><br>
+      
+      <div style="margin: 15px 0;">
+        <div class="box">Diagnostic Agent</div><br>
+        ├─ Uses: PostgreSQL MCP (query logs)<br>
+        └─ Uses: Filesystem MCP (read config files)
+      </div>
+      
+      <div style="margin: 15px 0;">
+        <div class="box">Knowledge Agent</div><br>
+        ├─ Uses: Google Drive MCP (search runbooks)<br>
+        └─ Uses: Slack MCP (past solutions)
+      </div>
+      
+      <div style="margin: 15px 0;">
+        <div class="box">Resolution Agent</div><br>
+        ├─ Uses: PostgreSQL MCP (update status)<br>
+        ├─ Uses: Slack MCP (notify user)<br>
+        └─ Uses: GitHub MCP (create incident)
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>🚀 Getting Started</h2>
+  
+  <h3>Step-by-Step Plan</h3>
+  
+  <div style="background: white; border: 2px solid #667eea; border-radius: 10px; padding: 25px; margin: 20px 0;">
+    <h4 style="color: #667eea;">Week 1: Learn & Experiment</h4>
+    <ul style="font-size: 14px;">
+      <li>Read MCP documentation: <a href="https://modelcontextprotocol.io" target="_blank">modelcontextprotocol.io</a></li>
+      <li>Install MCP SDK and try filesystem server</li>
+      <li>Build simple "Hello World" MCP server</li>
+      <li>Connect Claude Desktop to your server</li>
+    </ul>
+    
+    <h4 style="color: #667eea; margin-top: 20px;">Week 2: Build First Server</h4>
+    <ul style="font-size: 14px;">
+      <li>Identify highest-value data source (e.g., PostgreSQL)</li>
+      <li>Build MCP server with read-only access</li>
+      <li>Add security: auth, rate limiting, audit logs</li>
+      <li>Test with one agent</li>
+    </ul>
+    
+    <h4 style="color: #667eea; margin-top: 20px;">Week 3-4: Expand</h4>
+    <ul style="font-size: 14px;">
+      <li>Build 2-3 more MCP servers (Slack, Google Drive)</li>
+      <li>Connect multiple agents to shared servers</li>
+      <li>Document usage and best practices</li>
+      <li>Get team feedback</li>
+    </ul>
+  </div>
+  
+  <h3>Resources</h3>
+  
+  <div class="grid">
+    <div class="card">
+      <h3>Official Docs</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="https://modelcontextprotocol.io" target="_blank">MCP Website</a></li>
+        <li><a href="https://github.com/modelcontextprotocol" target="_blank">GitHub Repo</a></li>
+        <li><a href="https://spec.modelcontextprotocol.io" target="_blank">Protocol Spec</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>Related Guides</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="06-agentic-workflows.html">Agentic AI Workflows</a></li>
+        <li><a href="master-evolution-guide.html">AI Evolution Guide</a></li>
+        <li><a href="00-QUICK-START.html">Quick Start</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer style="text-align: center; padding: 40px; background: #f5f7fa; color: #666; font-size: 14px;">
+  <p>© 2025 — Model Context Protocol (MCP) Guide</p>
+  <p style="margin-top: 10px;">Banking AI & Data Platform • Internal Training</p>
+</footer>
+
+</body>
+</html>

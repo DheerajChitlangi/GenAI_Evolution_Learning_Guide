@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG & Advanced RAG — Complete Implementation Guide</title>
+<style>
+  body {font-family: "Segoe UI", Arial, sans-serif; background:#f9fafc; color:#222; margin:0;}
+  section {padding:40px 60px; border-bottom:1px solid #e0e0e0;}
+  h1,h2,h3,h4 {margin-top:0;color:#003366;}
+  h1 {font-size:38px; text-align:center; margin:40px 0 20px 0;}
+  h2 {font-size:28px; margin-top:30px; border-bottom:3px solid #667eea; padding-bottom:10px;}
+  h3 {font-size:22px; margin-top:20px; color:#004a99;}
+  h4 {font-size:18px; margin-top:15px; color:#333;}
+  
+  .hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 60px;
+    text-align: center;
+    border-bottom: none;
+  }
+  .hero h1 {color: white; font-size: 42px; margin-bottom: 15px;}
+  .hero .subtitle {font-size: 20px; opacity: 0.95; margin-bottom: 20px;}
+  
+  .tl-dr {
+    background: #eaf4ff;
+    border-left: 5px solid #004a99;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+  .tl-dr strong {font-size: 18px; color: #003366;}
+  
+  .highlight {background:#eaf4ff; padding:20px; border-left:5px solid #004a99; border-radius: 8px; margin: 20px 0;}
+  .warning {background:#fff4e6; border-left:5px solid:#f59e0b; padding:20px; border-radius:8px; margin:20px 0;}
+  .success {background:#e6f7f1; border-left:5px solid:#006400; padding:20px; border-radius:8px; margin:20px 0;}
+  
+  .grid {display:flex; flex-wrap:wrap; gap:20px; margin: 20px 0;}
+  .card {
+    flex:1 1 300px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:white;
+    padding:25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .card h3 {margin-top:0; color:#003366;}
+  .card h4 {margin-top:15px; color:#004a99;}
+  
+  .architecture {
+    background: #f5f7fa;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .architecture .box {
+    background: white;
+    border: 2px solid #667eea;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    margin: 10px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .architecture .arrow {
+    display: inline-block;
+    color: #667eea;
+    font-size: 24px;
+    margin: 0 10px;
+  }
+  
+  .code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .code-block .comment {color: #6a9955;}
+  .code-block .keyword {color: #569cd6;}
+  .code-block .string {color: #ce9178;}
+  .code-block .function {color: #dcdcaa;}
+  .code-block .class {color: #4ec9b0;}
+  
+  .comparison-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  .before {background: #fff5f5; border-left: 5px solid #f56565; padding: 20px; border-radius: 8px;}
+  .after {background: #f0fff4; border-left: 5px solid #48bb78; padding: 20px; border-radius: 8px;}
+  .before h4 {color: #c53030;}
+  .after h4 {color: #2f855a;}
+  
+  table {border-collapse: collapse; width:100%; margin:20px 0;}
+  th, td {border:1px solid #ddd; padding:12px; text-align:left; vertical-align: top;}
+  th {background:#003366; color:#fff; font-weight: 600;}
+  tr:nth-child(even){background:#f2f6fa;}
+  
+  .pipeline-step {
+    background: white;
+    border: 2px solid #667eea;
+    border-radius: 10px;
+    padding: 25px;
+    margin: 20px 0;
+  }
+  
+  .step-box {
+    display: flex;
+    align-items: flex-start;
+    margin: 15px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+  }
+  .step-number {
+    background: #667eea;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 20px;
+    flex-shrink: 0;
+  }
+  .step-content {flex: 1;}
+  .step-content h4 {margin: 0 0 10px 0; color: #667eea;}
+  
+  @media (max-width: 768px) {
+    section {padding: 30px 20px;}
+    .grid, .comparison-box {grid-template-columns: 1fr;}
+    h1 {font-size: 32px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔍 RAG & Advanced RAG</h1>
+  <div class="subtitle">Stage 4: Retrieval-Augmented Generation with Vector Search</div>
+  <p style="max-width: 800px; margin: 20px auto; font-size: 16px; line-height: 1.6;">
+    Ground LLM responses in your actual documentation. Eliminate hallucinations, provide sources, 
+    and keep knowledge up-to-date without retraining. The gold standard for production Q&A systems.
+  </p>
+</div>
+
+<section>
+  <h2>🎯 What is RAG?</h2>
+  
+  <div class="tl-dr">
+    <strong>TL;DR</strong><br>
+    RAG (Retrieval-Augmented Generation) combines two steps: (1) Search your knowledge base to find relevant documents, 
+    (2) Inject those documents into the LLM prompt so it generates responses based on YOUR data, not just its training. 
+    Result: Accurate, sourced, up-to-date responses without hallucinations.
+  </div>
+  
+  <h3>The Problem RAG Solves</h3>
+  
+  <div class="comparison-box">
+    <div class="before">
+      <h4>❌ Without RAG (Stage 3)</h4>
+      <ul style="font-size: 14px; line-height: 1.8;">
+        <li><strong>Hallucinations:</strong> LLM invents plausible-sounding answers</li>
+        <li><strong>No sources:</strong> Can't verify where information came from</li>
+        <li><strong>Outdated knowledge:</strong> Model training data is frozen in time</li>
+        <li><strong>Limited context:</strong> Can't access your company docs</li>
+        <li><strong>Compliance risk:</strong> Banking requires documented sources</li>
+      </ul>
+      <div style="margin-top: 15px; padding: 15px; background: rgba(220,38,38,0.1); border-radius: 5px;">
+        <strong>Example:</strong> "How do I fix schema errors?"<br>
+        <strong>LLM:</strong> "Run this command..." <span style="color: #dc2626;">← Might be wrong!</span>
+      </div>
+    </div>
+    
+    <div class="after">
+      <h4>✅ With RAG (Stage 4)</h4>
+      <ul style="font-size: 14px; line-height: 1.8;">
+        <li><strong>Grounded:</strong> Responses based on retrieved documents</li>
+        <li><strong>Cited sources:</strong> Every claim includes source reference</li>
+        <li><strong>Always current:</strong> Search reflects latest documentation</li>
+        <li><strong>Company knowledge:</strong> Accesses your runbooks, SOPs</li>
+        <li><strong>Auditable:</strong> Full trail from query → docs → response</li>
+      </ul>
+      <div style="margin-top: 15px; padding: 15px; background: rgba(5,150,105,0.1); border-radius: 5px;">
+        <strong>Example:</strong> "How do I fix schema errors?"<br>
+        <strong>RAG:</strong> "Per SOP-451, run schema_sync..." <span style="color: #059669;">← Verified!</span>
+      </div>
+    </div>
+  </div>
+  
+  <h3>How RAG Works</h3>
+  
+  <div class="architecture">
+    <div style="margin-bottom: 20px; font-size: 18px; font-weight: 600; color: #003366;">
+      The RAG Pipeline
+    </div>
+    
+    <div style="margin-bottom: 30px;">
+      <div class="box">User Query</div>
+      <span class="arrow">→</span>
+      <div class="box">Embed Query<br>(Vector)</div>
+      <span class="arrow">→</span>
+      <div class="box">Vector Search<br>(Top-k Docs)</div>
+    </div>
+    
+    <div style="margin-bottom: 30px;">
+      <span class="arrow">↓</span>
+    </div>
+    
+    <div>
+      <div class="box">Inject Docs<br>into Prompt</div>
+      <span class="arrow">→</span>
+      <div class="box">LLM Generate<br>Response</div>
+      <span class="arrow">→</span>
+      <div class="box">Response<br>+ Sources</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>🏗️ Basic RAG Implementation</h2>
+  
+  <h3>Setup & Installation</h3>
+  
+  <div class="code-block">
+<span class="comment"># Install required packages</span>
+pip install chromadb sentence-transformers google-generativeai --break-system-packages
+
+<span class="comment"># For production, also consider:</span>
+<span class="comment"># - Pinecone (managed vector DB)</span>
+<span class="comment"># - Weaviate (open-source vector DB)</span>
+<span class="comment"># - pgvector (PostgreSQL extension)</span>
+  </div>
+  
+  <h3>Step 1: Index Your Knowledge Base</h3>
+  
+  <div class="code-block">
+<span class="keyword">import</span> chromadb
+<span class="keyword">from</span> chromadb.utils <span class="keyword">import</span> embedding_functions
+<span class="keyword">from</span> typing <span class="keyword">import</span> List, Dict
+
+<span class="comment"># Initialize ChromaDB (local vector database)</span>
+client = chromadb.PersistentClient(path=<span class="string">"./chroma_db"</span>)
+
+<span class="comment"># Use Gemini's embedding model</span>
+gemini_ef = embedding_functions.GoogleGenerativeAiEmbeddingFunction(
+    api_key=<span class="string">"YOUR_API_KEY"</span>,
+    model_name=<span class="string">"models/embedding-001"</span>
+)
+
+<span class="comment"># Create or get collection</span>
+collection = client.get_or_create_collection(
+    name=<span class="string">"support_docs"</span>,
+    embedding_function=gemini_ef,
+    metadata={<span class="string">"description"</span>: <span class="string">"IT support runbooks and SOPs"</span>}
+)
+
+<span class="comment"># Sample documents (your runbooks, SOPs, wikis)</span>
+documents = [
+    {
+        <span class="string">"id"</span>: <span class="string">"sop-451"</span>,
+        <span class="string">"text"</span>: <span class="string">"""Schema Validation Error Resolution - SOP-451
+        
+When a pipeline fails with schema validation error:
+1. Identify the affected table from error message
+2. Navigate to Data Platform Dashboard > Schema Management
+3. Click 'Run Schema Sync Job' for the affected table
+4. Wait for sync to complete (typically 2-5 minutes)
+5. Restart the failed pipeline job
+6. Verify job completes successfully
+
+IMPORTANT: Never manually alter schema without approval.
+Last Updated: 2025-01-15"""</span>,
+        <span class="string">"metadata"</span>: {
+            <span class="string">"category"</span>: <span class="string">"pipeline"</span>,
+            <span class="string">"sop_number"</span>: <span class="string">"451"</span>,
+            <span class="string">"last_updated"</span>: <span class="string">"2025-01-15"</span>
+        }
+    },
+    {
+        <span class="string">"id"</span>: <span class="string">"sop-234"</span>,
+        <span class="string">"text"</span>: <span class="string">"""Pipeline Timeout Configuration - SOP-234
+        
+To adjust pipeline timeout settings:
+1. Access pipeline configuration in Airflow UI
+2. Locate 'execution_timeout' parameter
+3. Current default is 1800 seconds (30 minutes)
+4. Recommended: Set to 2x average runtime
+5. Maximum allowed: 4 hours (14400 seconds)
+6. Apply changes and test with small batch first
+
+Timeout values by pipeline type:
+- ETL pipelines: 1-2 hours
+- Data quality checks: 30 minutes
+- Report generation: 15 minutes
+
+Last Updated: 2025-01-10"""</span>,
+        <span class="string">"metadata"</span>: {
+            <span class="string">"category"</span>: <span class="string">"pipeline"</span>,
+            <span class="string">"sop_number"</span>: <span class="string">"234"</span>,
+            <span class="string">"last_updated"</span>: <span class="string">"2025-01-10"</span>
+        }
+    },
+    {
+        <span class="string">"id"</span>: <span class="string">"sop-789"</span>,
+        <span class="string">"text"</span>: <span class="string">"""Database Access Request Process - SOP-789
+        
+Standard access request workflow:
+1. User submits ticket with justification
+2. Verify manager approval is attached
+3. Determine appropriate role:
+   - viewer: Read-only access (most common)
+   - editor: Read + write to specific schemas
+   - admin: Full access (requires VP approval)
+4. Grant access via IAM console
+5. Access expires after 90 days (automatic)
+6. Send confirmation email to user
+
+Emergency access (audit, compliance):
+- Requires approval from compliance officer
+- Maximum duration: 24 hours
+- Must enable additional audit logging
+- Notify security team immediately
+
+Last Updated: 2025-01-12"""</span>,
+        <span class="string">"metadata"</span>: {
+            <span class="string">"category"</span>: <span class="string">"access"</span>,
+            <span class="string">"sop_number"</span>: <span class="string">"789"</span>,
+            <span class="string">"last_updated"</span>: <span class="string">"2025-01-12"</span>
+        }
+    }
+]
+
+<span class="comment"># Add documents to collection (embeddings created automatically)</span>
+collection.add(
+    ids=[doc[<span class="string">"id"</span>] <span class="keyword">for</span> doc <span class="keyword">in</span> documents],
+    documents=[doc[<span class="string">"text"</span>] <span class="keyword">for</span> doc <span class="keyword">in</span> documents],
+    metadatas=[doc[<span class="string">"metadata"</span>] <span class="keyword">for</span> doc <span class="keyword">in</span> documents]
+)
+
+<span class="keyword">print</span>(<span class="string">f"✓ Indexed {len(documents)} documents"</span>)
+  </div>
+  
+  <h3>Step 2: Retrieve Relevant Documents</h3>
+  
+  <div class="code-block">
+<span class="keyword">def</span> <span class="function">retrieve_context</span>(query: <span class="keyword">str</span>, top_k: <span class="keyword">int</span> = <span class="string">3</span>) -> List[Dict]:
+    <span class="string">"""
+    Search vector database for relevant documents.
+    
+    Args:
+        query: User's question/ticket
+        top_k: Number of documents to retrieve
+        
+    Returns:
+        List of relevant documents with metadata
+    """</span>
+    
+    <span class="comment"># Query the collection (embedding done automatically)</span>
+    results = collection.query(
+        query_texts=[query],
+        n_results=top_k,
+        include=[<span class="string">"documents"</span>, <span class="string">"metadatas"</span>, <span class="string">"distances"</span>]
+    )
+    
+    <span class="comment"># Format results</span>
+    retrieved_docs = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(results[<span class="string">"ids"</span>][<span class="string">0</span>])):
+        retrieved_docs.append({
+            <span class="string">"id"</span>: results[<span class="string">"ids"</span>][<span class="string">0</span>][i],
+            <span class="string">"text"</span>: results[<span class="string">"documents"</span>][<span class="string">0</span>][i],
+            <span class="string">"metadata"</span>: results[<span class="string">"metadatas"</span>][<span class="string">0</span>][i],
+            <span class="string">"similarity"</span>: <span class="string">1</span> - results[<span class="string">"distances"</span>][<span class="string">0</span>][i]  <span class="comment"># Convert distance to similarity</span>
+        })
+    
+    <span class="keyword">return</span> retrieved_docs
+
+
+<span class="comment"># Example retrieval</span>
+query = <span class="string">"How do I fix a schema mismatch error in pipeline?"</span>
+docs = retrieve_context(query, top_k=<span class="string">2</span>)
+
+<span class="keyword">for</span> doc <span class="keyword">in</span> docs:
+    <span class="keyword">print</span>(<span class="string">f"Found: {doc['id']} (similarity: {doc['similarity']:.2f})"</span>)
+  </div>
+  
+  <h3>Step 3: Generate Response with Context</h3>
+  
+  <div class="code-block">
+<span class="keyword">import</span> google.generativeai <span class="keyword">as</span> genai
+
+genai.configure(api_key=<span class="string">"YOUR_API_KEY"</span>)
+model = genai.GenerativeModel(<span class="string">'gemini-1.5-pro'</span>)
+
+<span class="keyword">def</span> <span class="function">answer_with_rag</span>(query: <span class="keyword">str</span>) -> Dict:
+    <span class="string">"""
+    Answer query using RAG pipeline.
+    
+    Args:
+        query: User's question
+        
+    Returns:
+        Dict with answer, sources, and confidence
+    """</span>
+    
+    <span class="comment"># Step 1: Retrieve relevant documents</span>
+    retrieved_docs = retrieve_context(query, top_k=<span class="string">3</span>)
+    
+    <span class="comment"># Step 2: Format context from retrieved docs</span>
+    context = <span class="string">"\n\n---\n\n"</span>.join([
+        <span class="string">f"Document: {doc['id']}\n{doc['text']}"</span>
+        <span class="keyword">for</span> doc <span class="keyword">in</span> retrieved_docs
+    ])
+    
+    <span class="comment"># Step 3: Create grounded prompt</span>
+    prompt = <span class="string">f"""You are an IT support assistant. Answer the question using ONLY the provided documentation.
+
+CRITICAL RULES:
+1. Base your answer ONLY on the provided documents
+2. Cite the SOP number for each claim
+3. If the documents don't contain the answer, say "I don't have information about this in the available documentation"
+4. Never invent or assume information
+
+DOCUMENTATION:
+{context}
+
+QUESTION:
+{query}
+
+ANSWER (with SOP citations):"""</span>
+
+    <span class="comment"># Step 4: Generate response</span>
+    response = model.generate_content(prompt)
+    
+    <span class="comment"># Step 5: Return answer with sources</span>
+    <span class="keyword">return</span> {
+        <span class="string">"answer"</span>: response.text,
+        <span class="string">"sources"</span>: [
+            {
+                <span class="string">"id"</span>: doc[<span class="string">"id"</span>],
+                <span class="string">"sop"</span>: doc[<span class="string">"metadata"</span>].get(<span class="string">"sop_number"</span>),
+                <span class="string">"similarity"</span>: doc[<span class="string">"similarity"</span>]
+            }
+            <span class="keyword">for</span> doc <span class="keyword">in</span> retrieved_docs
+        ],
+        <span class="string">"retrieved_docs"</span>: retrieved_docs
+    }
+
+
+<span class="comment"># Example usage</span>
+query = <span class="string">"How do I handle a schema validation error?"</span>
+result = answer_with_rag(query)
+
+<span class="keyword">print</span>(<span class="string">"Answer:"</span>, result[<span class="string">"answer"</span>])
+<span class="keyword">print</span>(<span class="string">"\nSources:"</span>)
+<span class="keyword">for</span> source <span class="keyword">in</span> result[<span class="string">"sources"</span>]:
+    <span class="keyword">print</span>(<span class="string">f"  - SOP-{source['sop']} (relevance: {source['similarity']:.1%})"</span>)
+  </div>
+</section>
+
+<section>
+  <h2>⚡ Advanced RAG Techniques</h2>
+  
+  <h3>1. Chunking Strategies</h3>
+  
+  <div class="warning">
+    <strong>The Problem:</strong> Documents are often too long to embed effectively. Need to break them into chunks.
+  </div>
+  
+  <div class="grid">
+    <div class="card">
+      <h4>Fixed-Size Chunking</h4>
+      <p style="font-size: 14px;"><strong>Method:</strong> Split by character count (e.g., 500 chars)</p>
+      <p style="font-size: 14px;"><strong>Pros:</strong> Simple, consistent size</p>
+      <p style="font-size: 14px;"><strong>Cons:</strong> Can split mid-sentence</p>
+      <div class="code-block" style="font-size: 12px; padding: 10px; margin-top: 10px;">
+<span class="keyword">def</span> <span class="function">fixed_chunk</span>(text, size=<span class="string">500</span>):
+    <span class="keyword">return</span> [text[i:i+size] 
+            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="string">0</span>, len(text), size)]
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>Semantic Chunking</h4>
+      <p style="font-size: 14px;"><strong>Method:</strong> Split by paragraphs/sections</p>
+      <p style="font-size: 14px;"><strong>Pros:</strong> Preserves meaning</p>
+      <p style="font-size: 14px;"><strong>Cons:</strong> Variable sizes</p>
+      <div class="code-block" style="font-size: 12px; padding: 10px; margin-top: 10px;">
+<span class="keyword">def</span> <span class="function">semantic_chunk</span>(text):
+    <span class="comment"># Split by double newlines</span>
+    <span class="keyword">return</span> [p.strip() <span class="keyword">for</span> p <span class="keyword">in</span> 
+            text.split(<span class="string">'\n\n'</span>) 
+            <span class="keyword">if</span> p.strip()]
+      </div>
+    </div>
+    
+    <div class="card">
+      <h4>Sliding Window</h4>
+      <p style="font-size: 14px;"><strong>Method:</strong> Overlapping chunks</p>
+      <p style="font-size: 14px;"><strong>Pros:</strong> No context lost at boundaries</p>
+      <p style="font-size: 14px;"><strong>Cons:</strong> More storage needed</p>
+      <div class="code-block" style="font-size: 12px; padding: 10px; margin-top: 10px;">
+<span class="keyword">def</span> <span class="function">sliding_window</span>(text, size=<span class="string">500</span>, 
+                     overlap=<span class="string">100</span>):
+    chunks = []
+    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="string">0</span>, len(text), 
+                      size-overlap):
+        chunks.append(text[i:i+size])
+    <span class="keyword">return</span> chunks
+      </div>
+    </div>
+  </div>
+  
+  <div class="success">
+    <strong>Recommendation for Production:</strong> Use semantic chunking for SOPs (split by procedure steps) 
+    with 100-character overlap to maintain context.
+  </div>
+  
+  <h3>2. Hybrid Search (Keyword + Vector)</h3>
+  
+  <div class="highlight">
+    <strong>Concept:</strong> Combine traditional keyword search (BM25) with vector similarity for better retrieval.
+  </div>
+  
+  <div class="code-block">
+<span class="keyword">from</span> rank_bm25 <span class="keyword">import</span> BM25Okapi
+<span class="keyword">from</span> typing <span class="keyword">import</span> List, Tuple
+
+<span class="keyword">def</span> <span class="function">hybrid_search</span>(query: <span class="keyword">str</span>, 
+                   documents: List[<span class="keyword">str</span>],
+                   embeddings,
+                   top_k: <span class="keyword">int</span> = <span class="string">5</span>) -> List[Tuple[<span class="keyword">int</span>, <span class="keyword">float</span>]]:
+    <span class="string">"""
+    Combine BM25 keyword search with vector similarity.
+    
+    Returns: List of (doc_index, combined_score) tuples
+    """</span>
+    
+    <span class="comment"># 1. BM25 keyword search</span>
+    tokenized_docs = [doc.lower().split() <span class="keyword">for</span> doc <span class="keyword">in</span> documents]
+    bm25 = BM25Okapi(tokenized_docs)
+    bm25_scores = bm25.get_scores(query.lower().split())
+    
+    <span class="comment"># 2. Vector similarity search</span>
+    query_embedding = embed_query(query)
+    vector_scores = [
+        cosine_similarity(query_embedding, doc_emb)
+        <span class="keyword">for</span> doc_emb <span class="keyword">in</span> embeddings
+    ]
+    
+    <span class="comment"># 3. Combine scores (weighted average)</span>
+    alpha = <span class="string">0.5</span>  <span class="comment"># Weight: 0=only BM25, 1=only vector</span>
+    combined_scores = [
+        alpha * vector_scores[i] + (<span class="string">1</span>-alpha) * bm25_scores[i]
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(documents))
+    ]
+    
+    <span class="comment"># 4. Get top-k results</span>
+    ranked = sorted(
+        enumerate(combined_scores),
+        key=<span class="keyword">lambda</span> x: x[<span class="string">1</span>],
+        reverse=<span class="keyword">True</span>
+    )[:top_k]
+    
+    <span class="keyword">return</span> ranked
+  </div>
+  
+  <div class="success">
+    <strong>When to Use:</strong> Hybrid search catches both exact keyword matches (like SOP numbers) 
+    and semantic similarity. Improves retrieval quality by 15-25%.
+  </div>
+  
+  <h3>3. Query Rewriting</h3>
+  
+  <div class="highlight">
+    <strong>Concept:</strong> Improve user queries before searching to get better results.
+  </div>
+  
+  <div class="code-block">
+<span class="keyword">def</span> <span class="function">rewrite_query</span>(original_query: <span class="keyword">str</span>) -> List[<span class="keyword">str</span>]:
+    <span class="string">"""
+    Generate multiple versions of query for better retrieval.
+    """</span>
+    
+    prompt = <span class="string">f"""Given this support ticket query, generate 3 alternative phrasings 
+that would help find relevant documentation:
+
+Original: "{original_query}"
+
+Generate variations that:
+1. Use technical terminology
+2. Rephrase as a question
+3. Add context/keywords
+
+Return as JSON array of strings."""</span>
+
+    response = model.generate_content(prompt)
+    variations = json.loads(response.text)
+    
+    <span class="keyword">return</span> [original_query] + variations
+
+
+<span class="comment"># Example</span>
+original = <span class="string">"pipeline broke"</span>
+variations = rewrite_query(original)
+<span class="comment"># Results:</span>
+<span class="comment"># 1. "pipeline broke"</span>
+<span class="comment"># 2. "pipeline execution failure"</span>
+<span class="comment"># 3. "What causes pipeline jobs to fail?"</span>
+<span class="comment"># 4. "pipeline error troubleshooting data platform"</span>
+
+<span class="comment"># Search with all variations and combine results</span>
+all_results = []
+<span class="keyword">for</span> var <span class="keyword">in</span> variations:
+    all_results.extend(retrieve_context(var, top_k=<span class="string">2</span>))
+
+<span class="comment"># Deduplicate and re-rank</span>
+unique_results = deduplicate(all_results)
+  </div>
+  
+  <h3>4. Re-ranking Retrieved Documents</h3>
+  
+  <div class="highlight">
+    <strong>Concept:</strong> Initial retrieval is fast but imprecise. Use a more powerful model to re-rank top results.
+  </div>
+  
+  <div class="code-block">
+<span class="keyword">def</span> <span class="function">rerank_documents</span>(query: <span class="keyword">str</span>, 
+                     documents: List[Dict],
+                     top_k: <span class="keyword">int</span> = <span class="string">3</span>) -> List[Dict]:
+    <span class="string">"""
+    Re-rank retrieved documents using cross-encoder for better relevance.
+    """</span>
+    
+    <span class="comment"># Use Gemini to score relevance</span>
+    scored_docs = []
+    
+    <span class="keyword">for</span> doc <span class="keyword">in</span> documents:
+        prompt = <span class="string">f"""Rate how relevant this document is to the question on a scale of 0-10.
+Respond with ONLY a number.
+
+Question: {query}
+
+Document: {doc['text'][:500]}
+
+Relevance score (0-10):"""</span>
+
+        response = model.generate_content(prompt)
+        <span class="keyword">try</span>:
+            score = float(response.text.strip())
+        <span class="keyword">except</span>:
+            score = <span class="string">5.0</span>  <span class="comment"># Default if parsing fails</span>
+        
+        doc[<span class="string">'rerank_score'</span>] = score
+        scored_docs.append(doc)
+    
+    <span class="comment"># Sort by score and return top-k</span>
+    scored_docs.sort(key=<span class="keyword">lambda</span> x: x[<span class="string">'rerank_score'</span>], reverse=<span class="keyword">True</span>)
+    <span class="keyword">return</span> scored_docs[:top_k]
+  </div>
+  
+  <h3>5. Metadata Filtering</h3>
+  
+  <div class="code-block">
+<span class="comment"># Search with metadata constraints</span>
+results = collection.query(
+    query_texts=[<span class="string">"schema error solution"</span>],
+    n_results=<span class="string">5</span>,
+    where={
+        <span class="string">"category"</span>: <span class="string">"pipeline"</span>,  <span class="comment"># Only pipeline docs</span>
+        <span class="string">"last_updated"</span>: {<span class="string">"$gte"</span>: <span class="string">"2024-01-01"</span>}  <span class="comment"># Recent docs only</span>
+    }
+)
+
+<span class="comment"># This is critical for banking - only use approved, current SOPs!</span>
+  </div>
+</section>
+
+<section>
+  <h2>📊 Performance Optimization</h2>
+  
+  <h3>Metrics to Track</h3>
+  
+  <table style="font-size: 14px;">
+    <tr>
+      <th>Metric</th>
+      <th>Target</th>
+      <th>How to Measure</th>
+    </tr>
+    <tr>
+      <td><strong>Retrieval Precision</strong></td>
+      <td>&gt;80%</td>
+      <td>% of retrieved docs that are relevant</td>
+    </tr>
+    <tr>
+      <td><strong>Retrieval Recall</strong></td>
+      <td>&gt;90%</td>
+      <td>% of relevant docs that were retrieved</td>
+    </tr>
+    <tr>
+      <td><strong>End-to-End Latency</strong></td>
+      <td>&lt;5 seconds</td>
+      <td>Query → Response time</td>
+    </tr>
+    <tr>
+      <td><strong>Answer Quality</strong></td>
+      <td>&gt;4/5</td>
+      <td>Human ratings on sample queries</td>
+    </tr>
+    <tr>
+      <td><strong>Source Accuracy</strong></td>
+      <td>100%</td>
+      <td>Citations match actual source content</td>
+    </tr>
+    <tr>
+      <td><strong>Hallucination Rate</strong></td>
+      <td>&lt;5%</td>
+      <td>Responses not supported by retrieved docs</td>
+    </tr>
+  </table>
+  
+  <h3>Cost Optimization</h3>
+  
+  <div class="highlight">
+    <strong>RAG Cost Breakdown (500 tickets/month):</strong><br><br>
+    
+    • <strong>Embedding costs:</strong> $0.50/month<br>
+    &nbsp;&nbsp;(500 queries × $0.001/1K tokens)<br><br>
+    
+    • <strong>Vector DB:</strong> $10-50/month<br>
+    &nbsp;&nbsp;(ChromaDB free, managed services $10-50)<br><br>
+    
+    • <strong>LLM generation:</strong> $2,500/month<br>
+    &nbsp;&nbsp;(500 queries × 3 docs × 500 tokens × $0.003/1K)<br><br>
+    
+    <strong>Total: ~$3,000/month</strong><br><br>
+    
+    <strong>Optimization Strategies:</strong>
+    <ul style="margin-top: 10px;">
+      <li>Use Gemini Flash instead of Pro (-60% cost)</li>
+      <li>Cache frequently used docs</li>
+      <li>Limit top-k to 2-3 docs (not 5+)</li>
+      <li>Batch similar queries</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>🏭 Production Considerations</h2>
+  
+  <div class="pipeline-step">
+    <h3>Production RAG System</h3>
+    
+    <div class="step-box">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h4>Document Ingestion Pipeline</h4>
+        <ul style="font-size: 14px;">
+          <li>Watch for updates to SOPs (file system monitoring)</li>
+          <li>Chunk documents using semantic splitting</li>
+          <li>Generate embeddings (batch process)</li>
+          <li>Update vector DB (upsert changed docs only)</li>
+          <li>Track document versions and timestamps</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="step-box">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h4>Query Processing</h4>
+        <ul style="font-size: 14px;">
+          <li>Sanitize and validate user query</li>
+          <li>Optionally rewrite query for better retrieval</li>
+          <li>Apply metadata filters (category, date, approval status)</li>
+          <li>Retrieve top-k candidates (k=10-20)</li>
+          <li>Re-rank to top-3 most relevant</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="step-box">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h4>Response Generation</h4>
+        <ul style="font-size: 14px;">
+          <li>Construct grounded prompt with retrieved context</li>
+          <li>Add safety constraints (only use provided docs)</li>
+          <li>Generate response with LLM</li>
+          <li>Extract and format source citations</li>
+          <li>Validate response quality (hallucination check)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="step-box">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <h4>Monitoring & Logging</h4>
+        <ul style="font-size: 14px;">
+          <li>Log query, retrieved docs, response</li>
+          <li>Track latency at each stage</li>
+          <li>Collect user feedback (thumbs up/down)</li>
+          <li>Alert on high latency or error rates</li>
+          <li>Audit trail for compliance</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <h3>Banking-Specific Requirements</h3>
+  
+  <div class="warning">
+    <strong>Compliance Checklist:</strong>
+    <ul>
+      <li><input type="checkbox"> All source documents approved and version-controlled</li>
+      <li><input type="checkbox"> Audit log of every query and response</li>
+      <li><input type="checkbox"> Data retention policy implemented (90 days)</li>
+      <li><input type="checkbox"> PII detection and redaction in place</li>
+      <li><input type="checkbox"> Access controls on vector database</li>
+      <li><input type="checkbox"> Regular accuracy audits by compliance team</li>
+      <li><input type="checkbox"> Disaster recovery and backup procedures</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>🆚 RAG vs Fine-Tuning</h2>
+  
+  <table style="font-size: 14px;">
+    <tr>
+      <th>Aspect</th>
+      <th>RAG</th>
+      <th>Fine-Tuning</th>
+    </tr>
+    <tr>
+      <td><strong>Best For</strong></td>
+      <td>Knowledge that changes frequently</td>
+      <td>Consistent behavior/tone/format</td>
+    </tr>
+    <tr>
+      <td><strong>Setup Time</strong></td>
+      <td>3-4 weeks</td>
+      <td>6-8 weeks</td>
+    </tr>
+    <tr>
+      <td><strong>Update Speed</strong></td>
+      <td>Instant (just update docs)</td>
+      <td>Slow (requires retraining)</td>
+    </tr>
+    <tr>
+      <td><strong>Explainability</strong></td>
+      <td>High (shows sources)</td>
+      <td>Low (baked into model)</td>
+    </tr>
+    <tr>
+      <td><strong>Cost (500 tix/mo)</strong></td>
+      <td>$3K-6K</td>
+      <td>$1K-2K (lower per-query)</td>
+    </tr>
+    <tr>
+      <td><strong>Hallucination Risk</strong></td>
+      <td>Low (~5%)</td>
+      <td>Very Low (~3%)</td>
+    </tr>
+  </table>
+  
+  <div class="success">
+    <strong>Best Practice:</strong> Use RAG + Fine-Tuning together!<br>
+    • Fine-tune for consistent tone and formatting<br>
+    • RAG for up-to-date factual information<br>
+    • Result: Professional responses with fresh, grounded content
+  </div>
+</section>
+
+<section>
+  <h2>🔗 Next Steps</h2>
+  
+  <div class="grid">
+    <div class="card">
+      <h3>Continue Learning</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="05-fine-tuning.html">Stage 5: Fine-Tuning</a></li>
+        <li><a href="06-agentic-workflows.html">Stage 6: Agentic AI</a></li>
+        <li><a href="master-evolution-guide.html">Back to Master Guide</a></li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>Try It Yourself</h3>
+      <ul style="font-size: 14px;">
+        <li>Install ChromaDB</li>
+        <li>Index your team's docs</li>
+        <li>Test retrieval quality</li>
+        <li>Build Q&A prototype</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>Resources</h3>
+      <ul style="font-size: 14px;">
+        <li><a href="https://www.trychroma.com/" target="_blank">ChromaDB Docs</a></li>
+        <li><a href="https://ai.google.dev/gemini-api" target="_blank">Gemini API</a></li>
+        <li><a href="code-examples/04-rag/">Code Examples</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer style="text-align: center; padding: 40px; background: #f5f7fa; color: #666; font-size: 14px;">
+  <p>© 2025 — RAG & Advanced RAG Guide • Stage 4 of AI Evolution Series</p>
+  <p style="margin-top: 10px;">Banking AI & Data Platform • Internal Training</p>
+</footer>
+
+</body>
+</html>
